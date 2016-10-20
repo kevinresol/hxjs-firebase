@@ -1,0 +1,15 @@
+{
+  "name": "hxjs-firebase",
+  "license": "MIT",
+  "tags": [
+    "js",
+    "firebase"
+  ],
+  "classPath": "src",
+  "contributors": [
+    "kevinresol"
+  ],
+  "releasenote": "initial release",
+  "version": "0.0.0",
+  "dependencies": {}
+}

@@ -1,0 +1,3 @@
+-main Main.hx
+-x run
+-cp generator
