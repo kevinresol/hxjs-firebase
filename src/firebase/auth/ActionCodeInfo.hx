@@ -1,5 +1,5 @@
 package firebase.auth;
-extern interface ActionCodeInfo {
+@:jsRequire("firebase.auth", "ActionCodeInfo") extern interface ActionCodeInfo {
 	/**
 		The email address associated with the action code.
 	**/

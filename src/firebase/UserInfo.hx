@@ -1,5 +1,5 @@
 package firebase;
-extern interface UserInfo {
+@:jsRequire("firebase", "UserInfo") extern interface UserInfo {
 	/**
 		The user's unique ID.
 	**/

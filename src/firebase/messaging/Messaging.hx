@@ -1,5 +1,5 @@
 package firebase.messaging;
-extern interface Messaging {
+@:jsRequire("firebase.messaging", "Messaging") extern interface Messaging {
 	/**
 		Notification permissions are required to send a user push messages.
 		Calling this method displays the permission dialog to the user and

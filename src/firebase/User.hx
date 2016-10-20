@@ -1,5 +1,5 @@
 package firebase;
-extern interface User extends firebase.UserInfo {
+@:jsRequire("firebase", "User") extern interface User extends firebase.UserInfo {
 	var isAnonymous : Bool;
 	/**
 		True if the user's email address has been verified.

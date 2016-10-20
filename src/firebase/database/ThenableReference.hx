@@ -1,5 +1,5 @@
 package firebase.database;
-extern interface ThenableReference extends firebase.database.Reference extends firebase.Thenable<Dynamic> {
+@:jsRequire("firebase.database", "ThenableReference") extern interface ThenableReference extends firebase.database.Reference extends firebase.Thenable<Dynamic> {
 	/**
 		The last part of the current path.
 		

@@ -1,5 +1,5 @@
 package firebase.app;
-extern interface App {
+@:jsRequire("firebase.app", "App") extern interface App {
 	/**
 		The (read-only) name (identifier) for this App. '[DEFAULT]' is the name of
 		the default App.

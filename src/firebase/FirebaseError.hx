@@ -1,5 +1,5 @@
 package firebase;
-extern interface FirebaseError {
+@:jsRequire("firebase", "FirebaseError") extern interface FirebaseError {
 	/**
 		Error codes are strings using the following format:
 		

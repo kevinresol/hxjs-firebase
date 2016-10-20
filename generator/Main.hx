@@ -195,12 +195,13 @@ class Main {
 			if(!folder.exists()) folder.createDirectory();
 			var fullpath = folder + type.name + '.hx';
 			
-			try {
+			// try {
 				var source = printer.printTypeDefinition(type);
 				fullpath.saveContent(source); 
-			} catch(e:Dynamic) {
-				trace(type);
-			}
+			// } catch(e:Dynamic) {
+			// 	trace(type.name);
+			// 	trace(e);
+			// }
 		}
 		
 		// '$cwd/manual/firebase'.copy('$root/firebase');
@@ -211,18 +212,24 @@ class Main {
 		if(!fields.exists(fullname)) fields[fullname] = [];
 		var pack = fullname.split('.');
 		var name = pack.pop();
-		var params = switch fullname {
-			case 'firebase.Promise' | 'firebase.Thenable': [{name: 'T'}];
-			default: null;
-		}
 		types[fullname] = {
 			fields: [],
 			isExtern: true,
 			kind: kind,
-			meta: null,
+			meta: switch kind {
+				case TDClass(_): [{
+					name: ':jsRequire', 
+					params: [{expr: EConst(CString(pack.join('.'))), pos: null}, {expr: EConst(CString(name)), pos: null}],
+					pos: null,
+				}];
+				default: [];
+			},
 			name: name,
 			pack: pack,
-			params: params,
+			params: switch fullname {
+				case 'firebase.Promise' | 'firebase.Thenable': [{name: 'T'}];
+				default: null;
+			},
 			pos: null,
 		}
 		return types[fullname];

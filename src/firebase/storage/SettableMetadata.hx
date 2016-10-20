@@ -1,5 +1,5 @@
 package firebase.storage;
-extern interface SettableMetadata {
+@:jsRequire("firebase.storage", "SettableMetadata") extern interface SettableMetadata {
 	/**
 		Served as the 'Cache-Control' header on object download.
 	**/

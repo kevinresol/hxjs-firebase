@@ -1,5 +1,5 @@
 package firebase;
-extern interface Thenable<T> {
+@:jsRequire("firebase", "Thenable") extern interface Thenable<T> {
 	/**
 		Assign callback functions called when the Thenable value either
 		resolves, or is rejected.

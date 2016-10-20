@@ -1,5 +1,5 @@
 package firebase;
-extern class Promise<T> implements firebase.Thenable<T> {
+@:jsRequire("firebase", "Promise") extern class Promise<T> implements firebase.Thenable<T> {
 	/**
 		Assign callback functions called when the Promise either resolves, or is
 		rejected.

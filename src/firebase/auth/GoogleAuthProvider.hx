@@ -1,5 +1,5 @@
 package firebase.auth;
-extern class GoogleAuthProvider implements firebase.auth.AuthProvider {
+@:jsRequire("firebase.auth", "GoogleAuthProvider") extern class GoogleAuthProvider implements firebase.auth.AuthProvider {
 	static var PROVIDER_ID : String;
 	/**
 		Creates a credential for Google. At least one of ID token and access token

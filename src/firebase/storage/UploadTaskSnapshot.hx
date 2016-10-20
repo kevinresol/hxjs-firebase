@@ -1,5 +1,5 @@
 package firebase.storage;
-extern interface UploadTaskSnapshot {
+@:jsRequire("firebase.storage", "UploadTaskSnapshot") extern interface UploadTaskSnapshot {
 	/**
 		The number of bytes that have been successfully uploaded so far.
 	**/

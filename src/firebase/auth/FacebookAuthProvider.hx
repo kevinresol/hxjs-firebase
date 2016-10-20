@@ -1,5 +1,5 @@
 package firebase.auth;
-extern class FacebookAuthProvider implements firebase.auth.AuthProvider {
+@:jsRequire("firebase.auth", "FacebookAuthProvider") extern class FacebookAuthProvider implements firebase.auth.AuthProvider {
 	static var PROVIDER_ID : String;
 	static function credential(token:String):firebase.auth.AuthCredential;
 	var providerId : String;
