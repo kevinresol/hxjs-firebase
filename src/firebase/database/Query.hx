@@ -96,7 +96,7 @@ package firebase.database;
 		This is equivalent to calling `on()`, and then calling `off()` inside the
 		callback function. see `on()` for details on the event types.
 	**/
-	function once(eventType:String, ?successCallback:Dynamic, ?failureCallbackOrContext:haxe.extern.EitherType<Dynamic, Dynamic>, ?context:Dynamic):firebase.Promise<Dynamic>;
+	function once(eventType:String, ?successCallback:Dynamic, ?failureCallbackOrContext:haxe.extern.EitherType<Dynamic, Dynamic>, ?context:Dynamic):js.Promise<Dynamic>;
 	/**
 		Generates a new Query limited to the first specific number of children.
 		

@@ -20,19 +20,19 @@ package firebase.storage;
 	/**
 		Deletes the object at this reference's location.
 	**/
-	function delete():Promise<Dynamic>;
+	function delete():js.Promise<Dynamic>;
 	/**
 		Fetches metadata for the object at this location, if one exists.
 	**/
-	function getMetadata():Promise<firebase.storage.FullMetadata>;
+	function getMetadata():js.Promise<firebase.storage.FullMetadata>;
 	/**
 		Updates the metadata for the object at this location, if one exists.
 	**/
-	function updateMetadata(metadata:firebase.storage.SettableMetadata):Promise<firebase.storage.FullMetadata>;
+	function updateMetadata(metadata:firebase.storage.SettableMetadata):js.Promise<firebase.storage.FullMetadata>;
 	/**
 		Fetches a long lived download URL for this object.
 	**/
-	function getDownloadURL():Promise<String>;
+	function getDownloadURL():js.Promise<String>;
 	/**
 		A reference pointing to the parent location of this reference, or null if
 		this reference is the root.

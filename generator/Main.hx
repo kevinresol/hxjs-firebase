@@ -68,7 +68,7 @@ class Main {
 					var name = item.name;
 					var meta = [];
 					if(keywords.indexOf(name) != -1) {
-						name = '$name_';
+						name = name + '_';
 						meta.push({name: ':native', params: [{expr: EConst(CString(item.name)), pos: null}], pos: null});
 					}
 					addField(item.memberof, {
@@ -191,6 +191,12 @@ class Main {
 		var cwd = Sys.programPath().directory();
 		var root = '$cwd/../src/';
 		for(type in types) {
+			// skip promise
+			switch type.name {
+				case 'Promise': continue; // we use js.Promise, no need to generate
+				case 'Thenable': continue; // we have some manual adjustments done, don't override
+				default: 
+			}
 			var folder = root + type.pack.join('/') + '/';
 			if(!folder.exists()) folder.createDirectory();
 			var fullpath = folder + type.name + '.hx';
@@ -226,10 +232,7 @@ class Main {
 			},
 			name: name,
 			pack: pack,
-			params: switch fullname {
-				case 'firebase.Promise' | 'firebase.Thenable': [{name: 'T'}];
-				default: null;
-			},
+			params: null,
 			pos: null,
 		}
 		return types[fullname];
@@ -257,19 +260,20 @@ class Main {
 					
 					TAnonymous(fields);
 					 
-				case v if(v.indexOf('<') != -1): 
+				case v if(v.indexOf('<') != -1):
 					typeParamRe.match(v);
 					var type = switch typeParamRe.matched(1) {
+						case v if(v.indexOf('Promise') != -1): 'js.Promise';
 						case v if(v.endsWith('.')): v.substr(0, v.length - 1);
 						case v: v;
-					}
+					} 
 					if(type == 'Object') type = 'Dynamic';
 					var params = typeParamRe.matched(3);
 					TPath(asTypePath(type, [TPType(toType(params))]));
 					// TPath(asTypePath(type, params.split(',').map(function(n) return TPType(toType(n)))));
 				case v if(v.indexOf('.') != -1):
-					var params = if(v == 'firebase.Promise') [TPType(macro:Dynamic)] else []; 
-					TPath(asTypePath(v, params));
+					if(v.indexOf('Promise') != -1) TPath(asTypePath('js.Promise', [TPType(macro:Dynamic)]));
+					else TPath(asTypePath(v));
 				case 'boolean': macro:Bool;
 				case 'function': macro:Dynamic; // TODO
 				case 'string': macro:String;
@@ -280,7 +284,10 @@ class Main {
 				case 'ArrayBuffer': macro:js.html.ArrayBuffer;
 				case 'Blob': macro:js.html.Blob;
 				case 'Error': macro:js.Error;
-				default: trace(name); macro:Dynamic;
+				case 'Promise': macro:js.Promise<Dynamic>;
+				default: 
+					// trace(name);
+					macro:Dynamic;
 			}
 		}
 		

@@ -22,7 +22,7 @@ package firebase.auth;
 		    issued and when this method was called.</dd>
 		</dl>
 	**/
-	function verifyPasswordResetCode(code:String):firebase.Promise<String>;
+	function verifyPasswordResetCode(code:String):js.Promise<String>;
 	/**
 		Checks a verification code sent to the user by email or other out-of-band
 		mechanism.
@@ -45,7 +45,7 @@ package firebase.auth;
 		    issued and when this method was called.</dd>
 		</dl>
 	**/
-	function checkActionCode(code:String):firebase.Promise<firebase.auth.ActionCodeInfo>;
+	function checkActionCode(code:String):js.Promise<firebase.auth.ActionCodeInfo>;
 	/**
 		Applies a verification code sent to the user by email or other out-of-band
 		mechanism.
@@ -66,7 +66,7 @@ package firebase.auth;
 		    issued and when this method was called.</dd>
 		</dl>
 	**/
-	function applyActionCode(code:String):firebase.Promise<Dynamic>;
+	function applyActionCode(code:String):js.Promise<Dynamic>;
 	/**
 		The App associated with the Auth service instance.
 	**/
@@ -103,7 +103,7 @@ package firebase.auth;
 		<dd>Thrown if the password is not strong enough.</dd>
 		</dl>
 	**/
-	function createUserWithEmailAndPassword(email:String, password:String):firebase.Promise<firebase.User>;
+	function createUserWithEmailAndPassword(email:String, password:String):js.Promise<firebase.User>;
 	/**
 		Gets the list of provider IDs that can be used to sign in for the given email
 		address. Useful for an "identifier-first" sign-in flow.
@@ -114,7 +114,7 @@ package firebase.auth;
 		<dd>Thrown if the email address is not valid.</dd>
 		</dl>
 	**/
-	function fetchProvidersForEmail(email:String):firebase.Promise<Array<String>>;
+	function fetchProvidersForEmail(email:String):js.Promise<Array<String>>;
 	/**
 		Adds an observer for auth state changes.
 	**/
@@ -134,7 +134,7 @@ package firebase.auth;
 		<dd>Thrown if there is no user corresponding to the email address.</dd>
 		</dl>
 	**/
-	function sendPasswordResetEmail(email:String):firebase.Promise<Dynamic>;
+	function sendPasswordResetEmail(email:String):js.Promise<Dynamic>;
 	/**
 		Completes the password reset process, given a confirmation code and new
 		password.
@@ -157,7 +157,7 @@ package firebase.auth;
 		<dd>Thrown if the new password is not strong enough.</dd>
 		</dl>
 	**/
-	function confirmPasswordReset(code:String, newPassword:String):firebase.Promise<Dynamic>;
+	function confirmPasswordReset(code:String, newPassword:String):js.Promise<Dynamic>;
 	/**
 		Asynchronously signs in with the given credentials.
 		
@@ -190,7 +190,7 @@ package firebase.auth;
 		    does not have a password set.</dd>
 		</dl>
 	**/
-	function signInWithCredential(credential:firebase.auth.AuthCredential):firebase.Promise<firebase.User>;
+	function signInWithCredential(credential:firebase.auth.AuthCredential):js.Promise<firebase.User>;
 	/**
 		Asynchronously signs in using a custom token.
 		
@@ -208,7 +208,7 @@ package firebase.auth;
 		<dd>Thrown if the custom token format is incorrect.</dd>
 		</dl>
 	**/
-	function signInWithCustomToken(token:String):firebase.Promise<firebase.User>;
+	function signInWithCustomToken(token:String):js.Promise<firebase.User>;
 	/**
 		Asynchronously signs in using an email and password.
 		
@@ -234,7 +234,7 @@ package firebase.auth;
 		    corresponding to the email does not have a password set.</dd>
 		</dl>
 	**/
-	function signInWithEmailAndPassword(email:String, password:String):firebase.Promise<firebase.User>;
+	function signInWithEmailAndPassword(email:String, password:String):js.Promise<firebase.User>;
 	/**
 		Asynchronously signs in as an anonymous user.
 		
@@ -248,11 +248,11 @@ package firebase.auth;
 		    in the Firebase Console, under the Auth tab.</dd>
 		</dl>
 	**/
-	function signInAnonymously():firebase.Promise<firebase.User>;
+	function signInAnonymously():js.Promise<firebase.User>;
 	/**
 		Signs out the current user.
 	**/
-	function signOut():firebase.Promise<Dynamic>;
+	function signOut():js.Promise<Dynamic>;
 	/**
 		Authenticates a Firebase client using a popup-based OAuth authentication
 		flow.
@@ -304,7 +304,7 @@ package firebase.auth;
 		    console.</dd>
 		</dl>
 	**/
-	function signInWithPopup(provider:firebase.auth.AuthProvider):firebase.Promise<firebase.auth.UserCredential>;
+	function signInWithPopup(provider:firebase.auth.AuthProvider):js.Promise<firebase.auth.UserCredential>;
 	/**
 		Authenticates a Firebase client using a full-page redirect flow. To handle
 		the results and errors for this operation, refer to {@link
@@ -326,7 +326,7 @@ package firebase.auth;
 		    console.</dd>
 		</dl>
 	**/
-	function signInWithRedirect(provider:firebase.auth.AuthProvider):firebase.Promise<Dynamic>;
+	function signInWithRedirect(provider:firebase.auth.AuthProvider):js.Promise<Dynamic>;
 	/**
 		Returns a UserCredential from the redirect-based sign-in flow.
 		
@@ -389,7 +389,7 @@ package firebase.auth;
 		    Firebase console.</dd>
 		</dl>
 	**/
-	function getRedirectResult():firebase.Promise<firebase.auth.UserCredential>;
+	function getRedirectResult():js.Promise<firebase.auth.UserCredential>;
 	/**
 		Creates a new custom token (JWT) that can be sent back to a client to use
 		with signInWithCustomToken.
@@ -399,5 +399,5 @@ package firebase.auth;
 		Verifies a ID token (JWT). Returns a Promise with the tokens claims. Rejects
 		the promise if the token could not be verified.
 	**/
-	function verifyIdToken(idToken:String):firebase.Promise<Dynamic>;
+	function verifyIdToken(idToken:String):js.Promise<Dynamic>;
 }

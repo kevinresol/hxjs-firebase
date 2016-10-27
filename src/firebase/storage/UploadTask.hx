@@ -4,12 +4,12 @@ package firebase.storage;
 		This object behaves like a Promise, and resolves with its snapshot data when
 		the upload completes.
 	**/
-	function then(?onFulfilled:Dynamic, ?onRejected:Dynamic):Dynamic;
+	function then(?onFulfilled:Dynamic, ?onRejected:Dynamic):js.Promise<Dynamic>;
 	/**
 		Equivalent to calling `then(null, onRejected)`.
 	**/
 	@:native("catch")
-	function _catch(onRejected:Dynamic):Dynamic;
+	function catch_(onRejected:Dynamic):js.Promise<Dynamic>;
 	/**
 		Listens for events on this task.
 		

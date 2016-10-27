@@ -8,12 +8,12 @@ package firebase.database;
 		parent location, the write at this location will be canceled though all other
 		siblings will still be written.
 	**/
-	function cancel(?onComplete:Dynamic):firebase.Promise<Dynamic>;
+	function cancel(?onComplete:Dynamic):js.Promise<Dynamic>;
 	/**
 		Ensures the data at this location is deleted when the client is disconnected
 		(due to closing the browser, navigating to a new page, or network issues).
 	**/
-	function remove(?onComplete:Dynamic):firebase.Promise<Dynamic>;
+	function remove(?onComplete:Dynamic):js.Promise<Dynamic>;
 	/**
 		Ensures the data at this location is set to the specified value when the
 		client is disconnected (due to closing the browser, navigating to a new page,
@@ -33,7 +33,7 @@ package firebase.database;
 		operation to occur each time a disconnect occurs, you'll need to re-establish
 		the `onDisconnect` operations each time.
 	**/
-	function set(value:Dynamic, ?onComplete:Dynamic):firebase.Promise<Dynamic>;
+	function set(value:Dynamic, ?onComplete:Dynamic):js.Promise<Dynamic>;
 	/**
 		Ensures the data at this location is set to the specified value and priority
 		when the client is disconnected (due to closing the browser, navigating to a
@@ -45,7 +45,7 @@ package firebase.database;
 		 https://firebase.google.com/docs/database/web/retrieve-data#sorting_and_filtering_data
 		 Sorting and filtering data}).
 	**/
-	function setWithPriority(value:Dynamic, priority:haxe.extern.EitherType<String, Float>, ?onComplete:Dynamic):firebase.Promise<Dynamic>;
+	function setWithPriority(value:Dynamic, priority:haxe.extern.EitherType<String, Float>, ?onComplete:Dynamic):js.Promise<Dynamic>;
 	/**
 		Writes multiple values this location when the client is disconnected (due to
 		closing the browser, navigating to a new page, or network issues).
@@ -62,5 +62,5 @@ package firebase.database;
 		See {@link firebase.database.Reference#update} for examples of using
 		the connected version of `update`.
 	**/
-	function update(values:Dynamic, ?onComplete:Dynamic):firebase.Promise<Dynamic>;
+	function update(values:Dynamic, ?onComplete:Dynamic):js.Promise<Dynamic>;
 }

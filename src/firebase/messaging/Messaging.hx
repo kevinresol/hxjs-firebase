@@ -5,12 +5,12 @@ package firebase.messaging;
 		Calling this method displays the permission dialog to the user and
 		resolves if the permission is granted.
 	**/
-	function requestPermission():firebase.Promise<Dynamic>;
+	function requestPermission():js.Promise<Dynamic>;
 	/**
 		After calling `requestPermission()` you can call this method to get an FCM
 		registration token that can be used to send push messages to this user.
 	**/
-	function getToken():firebase.Promise<String>;
+	function getToken():js.Promise<String>;
 	/**
 		You should listen for token refreshes so your web app knows when FCM
 		has invalidated your existing token and you need to call `getToken()`
@@ -30,7 +30,7 @@ package firebase.messaging;
 		To forceably stop a registration token from being used, delete it
 		by calling this method.
 	**/
-	function deleteToken(token:String):firebase.Promise<Dynamic>;
+	function deleteToken(token:String):js.Promise<Dynamic>;
 	/**
 		To use your own service worker for receiving push messages, you
 		can pass in your service worker registration in this method.

@@ -14,7 +14,7 @@ package firebase.app;
 		Make the given App unusable and free the resources of all associated
 		services.
 	**/
-	function delete():firebase.Promise<Dynamic>;
+	function delete():js.Promise<Dynamic>;
 	/**
 		Gets the Firebase Auth Service object for an App.
 		

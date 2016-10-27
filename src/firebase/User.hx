@@ -20,18 +20,18 @@ package firebase;
 		Returns the current token if it has not expired, otherwise this will
 		refresh the token and return a new one.
 	**/
-	function getToken(?opt_forceRefresh:Bool):firebase.Promise<String>;
+	function getToken(?opt_forceRefresh:Bool):js.Promise<String>;
 	/**
 		Refreshes the current user, if signed in.
 	**/
-	function reload():firebase.Promise<Dynamic>;
+	function reload():js.Promise<Dynamic>;
 	/**
 		Sends a verification email to a user.
 		
 		The verification process is completed by calling
 		{@link firebase.auth.Auth#applyActionCode}
 	**/
-	function sendEmailVerification():firebase.Promise<Dynamic>;
+	function sendEmailVerification():js.Promise<Dynamic>;
 	/**
 		Links the user account with the given credentials.
 		
@@ -82,7 +82,7 @@ package firebase;
 		    the user associated with the email does not have a password.</dd>
 		</dl>
 	**/
-	function link(credential:firebase.auth.AuthCredential):firebase.Promise<firebase.User>;
+	function link(credential:firebase.auth.AuthCredential):js.Promise<firebase.User>;
 	/**
 		Unlinks a provider from a user account.
 		
@@ -93,7 +93,7 @@ package firebase;
 		    provider ID given does not exist.</dd>
 		</dt>
 	**/
-	function unlink(providerId:String):firebase.Promise<firebase.User>;
+	function unlink(providerId:String):js.Promise<firebase.User>;
 	/**
 		Re-authenticates a user using a fresh credential. Use before operations
 		such as {@link firebase.User#updatePassword} that require tokens from recent
@@ -121,7 +121,7 @@ package firebase;
 		    the user associated with the email does not have a password.</dd>
 		</dl>
 	**/
-	function reauthenticate(credential:firebase.auth.AuthCredential):firebase.Promise<Dynamic>;
+	function reauthenticate(credential:firebase.auth.AuthCredential):js.Promise<Dynamic>;
 	/**
 		Updates the user's email address.
 		
@@ -145,7 +145,7 @@ package firebase;
 		    not apply if the user is anonymous.</dd>
 		</dl>
 	**/
-	function updateEmail(newEmail:String):firebase.Promise<Dynamic>;
+	function updateEmail(newEmail:String):js.Promise<Dynamic>;
 	/**
 		Updates the user's password.
 		
@@ -163,11 +163,11 @@ package firebase;
 		    not apply if the user is anonymous.</dd>
 		</dl>
 	**/
-	function updatePassword(newPassword:String):firebase.Promise<Dynamic>;
+	function updatePassword(newPassword:String):js.Promise<Dynamic>;
 	/**
 		Updates a user's profile data.
 	**/
-	function updateProfile(profile:Dynamic):firebase.Promise<Dynamic>;
+	function updateProfile(profile:Dynamic):js.Promise<Dynamic>;
 	/**
 		Deletes and signs out the user.
 		
@@ -183,7 +183,7 @@ package firebase;
 		    not apply if the user is anonymous.</dd>
 		</dl>
 	**/
-	function delete():firebase.Promise<Dynamic>;
+	function delete():js.Promise<Dynamic>;
 	/**
 		Links the authenticated provider to the user account using a pop-up based
 		OAuth flow.
@@ -247,7 +247,7 @@ package firebase;
 		    console.</dd>
 		</dl>
 	**/
-	function linkWithPopup(provider:firebase.auth.AuthProvider):firebase.Promise<firebase.auth.UserCredential>;
+	function linkWithPopup(provider:firebase.auth.AuthProvider):js.Promise<firebase.auth.UserCredential>;
 	/**
 		Links the authenticated provider to the user account using a full-page
 		redirect flow.
@@ -272,7 +272,7 @@ package firebase;
 		    console.</dd>
 		</dl>
 	**/
-	function linkWithRedirect(provider:firebase.auth.AuthProvider):firebase.Promise<Dynamic>;
+	function linkWithRedirect(provider:firebase.auth.AuthProvider):js.Promise<Dynamic>;
 	/**
 		The user's unique ID.
 	**/

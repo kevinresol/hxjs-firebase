@@ -48,7 +48,7 @@ package firebase.database;
 		A single `set()` will generate a single "value" event at the location where the
 		`set()` was performed.
 	**/
-	function set(value:Dynamic, ?onComplete:Dynamic):firebase.Promise<Dynamic>;
+	function set(value:Dynamic, ?onComplete:Dynamic):js.Promise<Dynamic>;
 	/**
 		Writes multiple values to the database at once.
 		
@@ -81,7 +81,7 @@ package firebase.database;
 		 https://firebase.googleblog.com/2015/09/introducing-multi-location-updates-and_86.html
 		 Introducing multi-location updates and more}
 	**/
-	function update(values:Dynamic, ?onComplete:Dynamic):firebase.Promise<Dynamic>;
+	function update(values:Dynamic, ?onComplete:Dynamic):js.Promise<Dynamic>;
 	/**
 		Writes data the database location. Like `set()` but also specifies the
 		priority for that data.
@@ -92,7 +92,7 @@ package firebase.database;
 		 https://firebase.google.com/docs/database/web/retrieve-data#sorting_and_filtering_data
 		 Sorting and filtering data}).
 	**/
-	function setWithPriority(newVal:Dynamic, newPriority:haxe.extern.EitherType<Float, String>, ?onComplete:Dynamic):firebase.Promise<Dynamic>;
+	function setWithPriority(newVal:Dynamic, newPriority:haxe.extern.EitherType<Float, String>, ?onComplete:Dynamic):js.Promise<Dynamic>;
 	/**
 		Remove the data at this database location.
 		
@@ -104,7 +104,7 @@ package firebase.database;
 		when complete. If provided, the onComplete callback will be called
 		asynchronously after synchronization has finished.
 	**/
-	function remove(?onComplete:Dynamic):firebase.Promise<Dynamic>;
+	function remove(?onComplete:Dynamic):js.Promise<Dynamic>;
 	/**
 		Atomically modifies the data at this location.
 		
@@ -131,7 +131,7 @@ package firebase.database;
 		transactions requires the client to read the data in order to transactionally
 		update it.
 	**/
-	function transaction(transactionUpdate:Dynamic, ?onComplete:Dynamic, ?applyLocally:Bool):firebase.Promise<{ var committed : Bool; @:optional
+	function transaction(transactionUpdate:Dynamic, ?onComplete:Dynamic, ?applyLocally:Bool):js.Promise<{ var committed : Bool; @:optional
 	var snapshot : firebase.database.DataSnapshot; }>;
 	/**
 		Sets a priority for the data at this database location.
@@ -142,7 +142,7 @@ package firebase.database;
 		 https://firebase.google.com/docs/database/web/retrieve-data#sorting_and_filtering_data
 		 Sorting and filtering data}).
 	**/
-	function setPriority(priority:haxe.extern.EitherType<Float, String>, onComplete:Dynamic):firebase.Promise<Dynamic>;
+	function setPriority(priority:haxe.extern.EitherType<Float, String>, onComplete:Dynamic):js.Promise<Dynamic>;
 	/**
 		Generates a new child location using a unique key and returns its reference.
 		
@@ -270,7 +270,7 @@ package firebase.database;
 		This is equivalent to calling `on()`, and then calling `off()` inside the
 		callback function. see `on()` for details on the event types.
 	**/
-	function once(eventType:String, ?successCallback:Dynamic, ?failureCallbackOrContext:haxe.extern.EitherType<Dynamic, Dynamic>, ?context:Dynamic):firebase.Promise<Dynamic>;
+	function once(eventType:String, ?successCallback:Dynamic, ?failureCallbackOrContext:haxe.extern.EitherType<Dynamic, Dynamic>, ?context:Dynamic):js.Promise<Dynamic>;
 	/**
 		Generates a new Query limited to the first specific number of children.
 		
