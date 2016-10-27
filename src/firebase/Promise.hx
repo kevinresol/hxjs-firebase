@@ -4,20 +4,20 @@ package firebase;
 		Assign callback functions called when the Promise either resolves, or is
 		rejected.
 	**/
-	function then(?onResolve:Dynamic, ?onReject:Dynamic):firebase.Promise<Dynamic>;
+	function then(?onResolve:T, ?onReject:js.Error):firebase.Promise<T>;
 	/**
 		Assign a callback when the Promise rejects.
 	**/
 	@:native("catch")
-	function _catch(?onReject:Dynamic):firebase.Thenable<Dynamic>;
+	function catch_(?onReject:js.Error):firebase.Promise<T>;
 	/**
 		Return a resolved Promise.
 	**/
-	static function resolve(?value:Dynamic):firebase.Promise<Dynamic>;
+	static function resolve<T>(?value:T):firebase.Promise<T>;
 	/**
 		Return (an immediately) rejected Promise.
 	**/
-	static function reject(error:js.Error):firebase.Promise<Dynamic>;
+	static function reject<T>(error:js.Error):firebase.Promise<T>;
 	/**
 		Convert an array of Promises, to a single array of values.
 		<code>Promise.all()</code> resolves only after all the Promises in the array
@@ -26,5 +26,5 @@ package firebase;
 		<code>Promise.all()</code> rejects when any of the promises in the Array have
 		rejected.
 	**/
-	static function all(values:Array<firebase.Promise<Dynamic>>):firebase.Promise<Array<Dynamic>>;
+	static function all<T>(values:Array<firebase.Promise<T>>):firebase.Promise<Array<T>>;
 }

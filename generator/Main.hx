@@ -68,7 +68,7 @@ class Main {
 					var name = item.name;
 					var meta = [];
 					if(keywords.indexOf(name) != -1) {
-						name = '_$name';
+						name = '$name_';
 						meta.push({name: ':native', params: [{expr: EConst(CString(item.name)), pos: null}], pos: null});
 					}
 					addField(item.memberof, {

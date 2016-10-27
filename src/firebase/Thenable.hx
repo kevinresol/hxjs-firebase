@@ -4,10 +4,10 @@ package firebase;
 		Assign callback functions called when the Thenable value either
 		resolves, or is rejected.
 	**/
-	function then(?onResolve:Dynamic, ?onReject:Dynamic):firebase.Thenable<Dynamic>;
+	function then(?onResolve:T, ?onReject:js.Error):firebase.Thenable<T>;
 	/**
 		Assign a callback when the Thenable rejects.
 	**/
 	@:native("catch")
-	function _catch(?onReject:Dynamic):firebase.Thenable<Dynamic>;
+	function catch_(?onReject:js.Error):firebase.Thenable<T>;
 }
