@@ -1,5 +1,5 @@
 package firebase;
-@:jsRequire("firebase") extern class Firebase {
+@:jsRequire(#if firebase_admin "firebase-admin" #else "firebase" #end) extern class Firebase {
 	/**
 		Create (and intialize) a FirebaseApp.
 	**/
@@ -15,7 +15,7 @@ package firebase;
 		
 		Usage: firebase.app()
 	**/
-	static function app(?name:String):firebase.app.App;
+	static function app(name:String):firebase.app.App;
 	/**
 		A (read-only) array of all the initialized Apps.
 	**/

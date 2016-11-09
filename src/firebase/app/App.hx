@@ -1,5 +1,5 @@
 package firebase.app;
-@:jsRequire("firebase", "app.App") extern interface App {
+@:jsRequire(#if firebase_admin "firebase-admin" #else "firebase" #end, "app.App") extern interface App {
 	/**
 		The (read-only) name (identifier) for this App. '[DEFAULT]' is the name of
 		the default App.

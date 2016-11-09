@@ -1,5 +1,5 @@
 package firebase.auth;
-@:jsRequire("firebase", "auth.GithubAuthProvider") extern class GithubAuthProvider implements firebase.auth.AuthProvider {
+@:jsRequire(#if firebase_admin "firebase-admin" #else "firebase" #end, "auth.GithubAuthProvider") extern class GithubAuthProvider implements firebase.auth.AuthProvider {
 	static var PROVIDER_ID : String;
 	static function credential(token:String):firebase.auth.AuthCredential;
 	var providerId : String;

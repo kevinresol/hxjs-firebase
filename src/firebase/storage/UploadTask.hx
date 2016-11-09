@@ -1,5 +1,5 @@
 package firebase.storage;
-@:jsRequire("firebase", "storage.UploadTask") extern interface UploadTask {
+@:jsRequire(#if firebase_admin "firebase-admin" #else "firebase" #end, "storage.UploadTask") extern interface UploadTask {
 	/**
 		This object behaves like a Promise, and resolves with its snapshot data when
 		the upload completes.

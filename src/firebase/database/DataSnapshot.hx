@@ -1,5 +1,5 @@
 package firebase.database;
-@:jsRequire("firebase", "database.DataSnapshot") extern interface DataSnapshot {
+@:jsRequire(#if firebase_admin "firebase-admin" #else "firebase" #end, "database.DataSnapshot") extern interface DataSnapshot {
 	/**
 		Extract a JavaScript value from a `DataSnapshot`.
 		

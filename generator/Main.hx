@@ -203,6 +203,7 @@ class Main {
 			
 			// try {
 				var source = printer.printTypeDefinition(type);
+				source = source.replace('@:jsRequire("firebase"', '@:jsRequire(#if firebase_admin "firebase-admin" #else "firebase" #end');
 				fullpath.saveContent(source); 
 			// } catch(e:Dynamic) {
 			// 	trace(type.name);

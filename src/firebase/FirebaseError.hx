@@ -1,5 +1,5 @@
 package firebase;
-@:jsRequire("firebase", "FirebaseError") extern interface FirebaseError {
+@:jsRequire(#if firebase_admin "firebase-admin" #else "firebase" #end, "FirebaseError") extern interface FirebaseError {
 	/**
 		Error codes are strings using the following format:
 		

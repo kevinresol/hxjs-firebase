@@ -1,5 +1,5 @@
 package firebase.database;
-@:jsRequire("firebase", "database.Reference") extern interface Reference extends firebase.database.Query {
+@:jsRequire(#if firebase_admin "firebase-admin" #else "firebase" #end, "database.Reference") extern interface Reference extends firebase.database.Query {
 	/**
 		The last part of the current path.
 		

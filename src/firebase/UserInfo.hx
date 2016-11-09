@@ -1,5 +1,5 @@
 package firebase;
-@:jsRequire("firebase", "UserInfo") extern interface UserInfo {
+@:jsRequire(#if firebase_admin "firebase-admin" #else "firebase" #end, "UserInfo") extern interface UserInfo {
 	/**
 		The user's unique ID.
 	**/

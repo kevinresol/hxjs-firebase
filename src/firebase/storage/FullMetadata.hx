@@ -1,5 +1,5 @@
 package firebase.storage;
-@:jsRequire("firebase", "storage.FullMetadata") extern interface FullMetadata extends firebase.storage.UploadMetadata {
+@:jsRequire(#if firebase_admin "firebase-admin" #else "firebase" #end, "storage.FullMetadata") extern interface FullMetadata extends firebase.storage.UploadMetadata {
 	/**
 		The bucket this object is contained in.
 	**/
