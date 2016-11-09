@@ -1,5 +1,5 @@
 package firebase.auth;
-@:jsRequire("firebase.auth", "TwitterAuthProvider") extern class TwitterAuthProvider implements firebase.auth.AuthProvider {
+@:jsRequire("firebase", "auth.TwitterAuthProvider") extern class TwitterAuthProvider implements firebase.auth.AuthProvider {
 	static var PROVIDER_ID : String;
 	static function credential(token:String, secret:String):firebase.auth.AuthCredential;
 	var providerId : String;

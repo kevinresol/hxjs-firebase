@@ -1,5 +1,5 @@
 package firebase.database;
-@:jsRequire("firebase.database", "Reference") extern interface Reference extends firebase.database.Query {
+@:jsRequire("firebase", "database.Reference") extern interface Reference extends firebase.database.Query {
 	/**
 		The last part of the current path.
 		
@@ -89,7 +89,7 @@ package firebase.database;
 		Applications need not use priority, but can order collections by
 		ordinary properties (see
 		{@link
-		 https://firebase.google.com/docs/database/web/retrieve-data#sorting_and_filtering_data
+		 https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
 		 Sorting and filtering data}).
 	**/
 	function setWithPriority(newVal:Dynamic, newPriority:haxe.extern.EitherType<Float, String>, ?onComplete:Dynamic):js.Promise<Dynamic>;
@@ -139,7 +139,7 @@ package firebase.database;
 		Applications need not use priority, but can order collections by
 		ordinary properties (see
 		{@link
-		 https://firebase.google.com/docs/database/web/retrieve-data#sorting_and_filtering_data
+		 https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
 		 Sorting and filtering data}).
 	**/
 	function setPriority(priority:haxe.extern.EitherType<Float, String>, onComplete:Dynamic):js.Promise<Dynamic>;
@@ -285,7 +285,7 @@ package firebase.database;
 		
 		You can read more about `limitToFirst()` in
 		{@link
-		 https://firebase.google.com/docs/database/web/retrieve-data#sorting_and_filtering_data
+		 https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
 		 Sorting and filtering data}.
 	**/
 	function limitToFirst(limit:Float):firebase.database.Query;
@@ -303,7 +303,7 @@ package firebase.database;
 		
 		You can read more about `limitToLast()` in
 		{@link
-		 https://firebase.google.com/docs/database/web/retrieve-data#sorting_and_filtering_data
+		 https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
 		 Sorting and filtering data}.
 	**/
 	function limitToLast(limit:Float):firebase.database.Query;
@@ -321,7 +321,7 @@ package firebase.database;
 		
 		You can read more about `orderByChild()` in
 		{@link
-		 https://firebase.google.com/docs/database/web/retrieve-data#sorting_and_filtering_data
+		 https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
 		 Sorting and filtering data}.
 	**/
 	function orderByChild(path:String):firebase.database.Query;
@@ -332,7 +332,7 @@ package firebase.database;
 		
 		You can read more about `orderByKey()` in
 		{@link
-		 https://firebase.google.com/docs/database/web/retrieve-data#sorting_and_filtering_data
+		 https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
 		 Sorting and filtering data}.
 	**/
 	function orderByKey():firebase.database.Query;
@@ -342,7 +342,7 @@ package firebase.database;
 		Applications need not use priority, but can order collections by
 		ordinary properties (see
 		{@link
-		 https://firebase.google.com/docs/database/web/retrieve-data#sorting_and_filtering_data
+		 https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
 		 Sorting and filtering data}).
 	**/
 	function orderByPriority():firebase.database.Query;
@@ -354,7 +354,7 @@ package firebase.database;
 		
 		You can read more about `orderByValue()` in
 		{@link
-		 https://firebase.google.com/docs/database/web/retrieve-data#sorting_and_filtering_data
+		 https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
 		 Sorting and filtering data}.
 	**/
 	function orderByValue():firebase.database.Query;
@@ -372,7 +372,7 @@ package firebase.database;
 		
 		You can read more about `startAt()` in
 		{@link
-		 https://firebase.google.com/docs/database/web/retrieve-data#sorting_and_filtering_data
+		 https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
 		 Sorting and filtering data}.
 	**/
 	function startAt(value:haxe.extern.EitherType<Bool, haxe.extern.EitherType<String, Float>>, ?key:String):firebase.database.Query;
@@ -390,7 +390,7 @@ package firebase.database;
 		
 		You can read more about `endAt()` in
 		{@link
-		 https://firebase.google.com/docs/database/web/retrieve-data#sorting_and_filtering_data
+		 https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
 		 Sorting and filtering data}.
 	**/
 	function endAt(value:haxe.extern.EitherType<Bool, haxe.extern.EitherType<String, Float>>, ?key:String):firebase.database.Query;
@@ -407,7 +407,7 @@ package firebase.database;
 		
 		You can read more about `equalTo()` in
 		{@link
-		 https://firebase.google.com/docs/database/web/retrieve-data#sorting_and_filtering_data
+		 https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
 		 Sorting and filtering data}.
 	**/
 	function equalTo(value:haxe.extern.EitherType<Bool, haxe.extern.EitherType<String, Float>>, ?key:String):firebase.database.Query;

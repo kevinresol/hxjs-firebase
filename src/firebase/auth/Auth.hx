@@ -1,5 +1,5 @@
 package firebase.auth;
-@:jsRequire("firebase.auth", "Auth") extern interface Auth {
+@:jsRequire("firebase", "auth.Auth") extern interface Auth {
 	/**
 		Checks a password reset code sent to the user by email or other out-of-band
 		mechanism.

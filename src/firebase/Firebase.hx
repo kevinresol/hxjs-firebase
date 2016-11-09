@@ -21,7 +21,7 @@ package firebase;
 	**/
 	static var apps : Array<firebase.app.App>;
 	/**
-		The current SDK version ('3.5.1').
+		The current SDK version ('3.6.0').
 	**/
 	static var SDK_VERSION : String;
 	/**

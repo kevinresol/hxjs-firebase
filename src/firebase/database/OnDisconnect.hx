@@ -1,5 +1,5 @@
 package firebase.database;
-@:jsRequire("firebase.database", "OnDisconnect") extern interface OnDisconnect {
+@:jsRequire("firebase", "database.OnDisconnect") extern interface OnDisconnect {
 	/**
 		Cancels all previously queued `onDisconnect()` set or update events for this
 		location and all children.
@@ -42,7 +42,7 @@ package firebase.database;
 		Applications need not use priority, but can order collections by
 		ordinary properties (see
 		{@link
-		 https://firebase.google.com/docs/database/web/retrieve-data#sorting_and_filtering_data
+		 https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
 		 Sorting and filtering data}).
 	**/
 	function setWithPriority(value:Dynamic, priority:haxe.extern.EitherType<String, Float>, ?onComplete:Dynamic):js.Promise<Dynamic>;

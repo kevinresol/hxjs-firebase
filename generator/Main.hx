@@ -225,7 +225,7 @@ class Main {
 			meta: switch kind {
 				case TDClass(_): [{
 					name: ':jsRequire', 
-					params: [{expr: EConst(CString(pack.join('.'))), pos: null}, {expr: EConst(CString(name)), pos: null}],
+					params: [{expr: EConst(CString(pack[0])), pos: null}, {expr: EConst(CString(pack.slice(1).concat([name]).join('.'))), pos: null}],
 					pos: null,
 				}];
 				default: [];

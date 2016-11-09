@@ -1,5 +1,5 @@
 package firebase.database;
-@:jsRequire("firebase.database", "DataSnapshot") extern interface DataSnapshot {
+@:jsRequire("firebase", "database.DataSnapshot") extern interface DataSnapshot {
 	/**
 		Extract a JavaScript value from a `DataSnapshot`.
 		
@@ -17,7 +17,7 @@ package firebase.database;
 		Applications need not use priority, but can order collections by
 		ordinary properties (see
 		{@link
-		 https://firebase.google.com/docs/database/web/retrieve-data#sorting_and_filtering_data
+		 https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
 		 Sorting and filtering data}).
 	**/
 	function exportVal():Dynamic;
@@ -47,7 +47,7 @@ package firebase.database;
 		Applications need not use priority, but can order collections by
 		ordinary properties (see
 		{@link
-		 https://firebase.google.com/docs/database/web/retrieve-data#sorting_and_filtering_data
+		 https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
 		 Sorting and filtering data}).
 	**/
 	function getPriority():haxe.extern.EitherType<Float, String>;
