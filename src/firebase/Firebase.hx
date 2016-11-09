@@ -15,7 +15,7 @@ package firebase;
 		
 		Usage: firebase.app()
 	**/
-	static function app(name:String):firebase.app.App;
+	static function app(?name:String):firebase.app.App;
 	/**
 		A (read-only) array of all the initialized Apps.
 	**/
