@@ -394,7 +394,7 @@ package firebase.auth;
 		Creates a new custom token (JWT) that can be sent back to a client to use
 		with signInWithCustomToken.
 	**/
-	function createCustomToken(uid:String, ?developerClaims:Dynamic):String;
+	function createCustomToken(uid:String, ?developerClaims:Dynamic):js.Promise<String>;
 	/**
 		Verifies a ID token (JWT). Returns a Promise with the tokens claims. Rejects
 		the promise if the token could not be verified.
