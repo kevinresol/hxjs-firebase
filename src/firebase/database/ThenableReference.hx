@@ -1,92 +1,95 @@
 package firebase.database;
 @:jsRequire(#if firebase_admin "firebase-admin" #else "firebase" #end, "database.ThenableReference") extern interface ThenableReference extends firebase.database.Reference extends firebase.Thenable<Dynamic> {
 	/**
-		The last part of the current path.
+		The last part of the `Reference`'s path.
 		
-		For example, "ada" is the key for
-		https://sample-app.firebaseio.com/users/ada.
+		For example, `"ada"` is the key for
+		`https://<DATABASE_NAME>.firebaseio.com/users/ada`.
 		
-		The key of the root Reference is `null`.
+		The key of a root `Reference` is `null`.
 	**/
 	var key : String;
 	/**
-		Gets a Reference for the location at the specified relative path.
+		Gets a `Reference` for the location at the specified relative path.
 		
 		The relative path can either be a simple child name (for example, "ada") or
 		a deeper slash-separated path (for example, "ada/name/first").
 	**/
 	function child(path:String):firebase.database.Reference;
 	/**
-		The parent location of a Reference.
+		The parent location of a `Reference`.
+		
+		The parent of a root `Reference` is `null`.
 	**/
 	var parent : firebase.database.Reference;
 	/**
-		The root location of a Reference.
+		The root `Reference` of the Database.
 	**/
 	var root : firebase.database.Reference;
 	/**
-		Write data to this database location.
+		Writes data to this Database location.
 		
 		This will overwrite any data at this location and all child locations.
 		
-		The effect of the write will be visible immediately and the corresponding
-		events ('value', 'child_added', etc.) will be triggered. Synchronization of
+		The effect of the write will be visible immediately, and the corresponding
+		events ("value", "child_added", etc.) will be triggered. Synchronization of
 		the data to the Firebase servers will also be started, and the returned
-		Promise will resolve when complete. If provided, the onComplete callback will
-		be called asynchronously after synchronization has finished.
+		Promise will resolve when complete. If provided, the `onComplete` callback
+		will be called asynchronously after synchronization has finished.
 		
-		Passing `null` for the new value is equivalent to calling remove(); all data at
-		this location or any child location will be deleted.
+		Passing `null` for the new value is equivalent to calling `remove()`; namely,
+		all data at this location and all child locations will be deleted.
 		
 		`set()` will remove any priority stored at this location, so if priority is
-		meant to be preserved, you should use `setWithPriority()` instead.
+		meant to be preserved, you need to use `setWithPriority()` instead.
 		
-		Note that modifying data with `set()` will cancel any pending transactions at
-		that location, so extreme care should be taken if mixing `set()` and
+		Note that modifying data with `set()` will cancel any pending transactions
+		at that location, so extreme care should be taken if mixing `set()` and
 		`transaction()` to modify the same data.
 		
-		A single `set()` will generate a single "value" event at the location where the
-		`set()` was performed.
+		A single `set()` will generate a single "value" event at the location where
+		the `set()` was performed.
 	**/
 	function set(value:Dynamic, ?onComplete:Dynamic):js.Promise<Dynamic>;
 	/**
-		Writes multiple values to the database at once.
+		Writes multiple values to the Database at once.
 		
-		The `values` argument contains multiple property/value pairs that will be
-		written to the database together. Each child property can either be a simple
-		property (for example, "name"), or a relative path (for example,
+		The `values` argument contains multiple property-value pairs that will be
+		written to the Database together. Each child property can either be a simple
+		property (for example, "name") or a relative path (for example,
 		"name/first") from the current location to the data to update.
 		
 		As opposed to the `set()` method, `update()` can be use to selectively update
 		only the referenced properties at the current location (instead of replacing
 		all the child properties at the current location).
 		
-		The effect of the write will be visible immediately and the corresponding
+		The effect of the write will be visible immediately, and the corresponding
 		events ('value', 'child_added', etc.) will be triggered. Synchronization of
 		the data to the Firebase servers will also be started, and the returned
-		Promise will resolve when complete. If provided, the onComplete callback will
-		be called asynchronously after synchronization has finished.
+		Promise will resolve when complete. If provided, the `onComplete` callback
+		will be called asynchronously after synchronization has finished.
 		
-		A single `update()` will generate a single "value" event at the location where
-		the `update()` was performed, regardless of how many children were modified.
+		A single `update()` will generate a single "value" event at the location
+		where the `update()` was performed, regardless of how many children were
+		modified.
 		
-		Note that modifying data with `update()` will cancel any pending transactions
-		at that location, so extreme care should be taken if mixing `update()` and
-		`transaction()` to modify the same data.
+		Note that modifying data with `update()` will cancel any pending
+		transactions at that location, so extreme care should be taken if mixing
+		`update()` and `transaction()` to modify the same data.
 		
 		Passing `null` to `update()` will remove the data at this location.
 		
 		See
 		{@link
 		 https://firebase.googleblog.com/2015/09/introducing-multi-location-updates-and_86.html
-		 Introducing multi-location updates and more}
+		 Introducing multi-location updates and more}.
 	**/
 	function update(values:Dynamic, ?onComplete:Dynamic):js.Promise<Dynamic>;
 	/**
-		Writes data the database location. Like `set()` but also specifies the
+		Writes data the Database location. Like `set()` but also specifies the
 		priority for that data.
 		
-		Applications need not use priority, but can order collections by
+		Applications need not use priority but can order collections by
 		ordinary properties (see
 		{@link
 		 https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
@@ -94,7 +97,7 @@ package firebase.database;
 	**/
 	function setWithPriority(newVal:Dynamic, newPriority:haxe.extern.EitherType<Float, String>, ?onComplete:Dynamic):js.Promise<Dynamic>;
 	/**
-		Remove the data at this database location.
+		Removes the data at this Database location.
 		
 		Any data at child locations will also be deleted.
 		
@@ -134,9 +137,9 @@ package firebase.database;
 	function transaction(transactionUpdate:Dynamic, ?onComplete:Dynamic, ?applyLocally:Bool):js.Promise<{ var committed : Bool; @:optional
 	var snapshot : firebase.database.DataSnapshot; }>;
 	/**
-		Sets a priority for the data at this database location.
+		Sets a priority for the data at this Database location.
 		
-		Applications need not use priority, but can order collections by
+		Applications need not use priority but can order collections by
 		ordinary properties (see
 		{@link
 		 https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
@@ -144,13 +147,14 @@ package firebase.database;
 	**/
 	function setPriority(priority:haxe.extern.EitherType<Float, String>, onComplete:Dynamic):js.Promise<Dynamic>;
 	/**
-		Generates a new child location using a unique key and returns its reference.
+		Generates a new child location using a unique key and returns its
+		`Reference`.
 		
 		This is the most common pattern for adding data to a collection of items.
 		
 		If you provide a value to `push()`, the value will be written to the
 		generated location. If you don't pass a value, nothing will be written to the
-		database and the child will remain empty (but you can use the reference
+		Database and the child will remain empty (but you can use the `Reference`
 		elsewhere).
 		
 		The unique key generated by `push()` are ordered by the current time, so the
@@ -160,7 +164,7 @@ package firebase.database;
 		
 		See
 		{@link
-		 https://firebase.google.com/docs/database/web/save-data#append_to_a_list_of_data
+		 https://firebase.google.com/docs/database/web/lists-of-data#append_to_a_list_of_data
 		 Append to a list of data}
 		</br>See
 		{@link
@@ -170,12 +174,14 @@ package firebase.database;
 	function push(?value:Dynamic, ?onComplete:Dynamic):firebase.database.ThenableReference;
 	/**
 		Returns an `OnDisconnect` object - see
-		{@link https://firebase.google.com/docs/database/web/offline-capabilities
-		  Offline Capabilities} for information on how to use it.
+		{@link
+		  https://firebase.google.com/docs/database/web/offline-capabilities
+		  Enabling Offline Capabilities in JavaScript} for more information on how
+		to use it.
 	**/
 	function onDisconnect():firebase.database.OnDisconnect;
 	/**
-		Returns a `Reference` to the Query's location.
+		Returns a `Reference` to the `Query`'s location.
 	**/
 	var ref : firebase.database.Reference;
 	/**
@@ -187,43 +193,44 @@ package firebase.database;
 		and are from the same instance of `firebase.app.App`.
 		
 		Two `Query` objects are equivalent if they represent the same location, have
-		the same query parameters, and are from the same instance of `firebase.app.App`.
-		Equivalent queries share the same sort order, limits, and starting and
-		ending points.
+		the same query parameters, and are from the same instance of
+		`firebase.app.App`. Equivalent queries share the same sort order, limits, and
+		starting and ending points.
 	**/
 	function isEqual(other:firebase.database.Query):Bool;
 	/**
 		Listens for data changes at a particular location.
 		
-		This is the primary way to read data from a database. Your callback
+		This is the primary way to read data from a Database. Your callback
 		will be triggered for the initial data and again whenever the data changes.
 		Use `off( )` to stop receiving updates. See
-		{@link https://firebase.google.com/docs/database/web/retrieve-data Retrieve Data on the Web}
+		{@link https://firebase.google.com/docs/database/web/retrieve-data
+		  Retrieve Data on the Web}
 		for more details.
 		
 		<h4>value event</h4>
 		
 		This event will trigger once with the initial data stored at this location,
-		and then trigger again each time the data changes. The `DataSnapshot` passed to
-		the callback will be for the location at which `on()` was called. It won't
-		trigger until the entire contents has been synchronized. If the location has
-		no data, it will be triggered with an empty `DataSnapshot` (`val()` will return
-		`null`).
+		and then trigger again each time the data changes. The `DataSnapshot` passed
+		to the callback will be for the location at which `on()` was called. It
+		won't trigger until the entire contents has been synchronized. If the
+		location has no data, it will be triggered with an empty `DataSnapshot`
+		(`val()` will return `null`).
 		
 		<h4>child_added event</h4>
 		
 		This event will be triggered once for each initial child at this location,
 		and it will be triggered again every time a new child is added. The
-		`DataSnapshot` passed into the callback will reflect the data for the relevant
-		child. For ordering purposes, it is passed a second argument which is a
-		string containing the key of the previous sibling child by sort order (or
-		`null` if it is the first child).
+		`DataSnapshot` passed into the callback will reflect the data for the
+		relevant child. For ordering purposes, it is passed a second argument which
+		is a string containing the key of the previous sibling child by sort order,
+		or `null` if it is the first child.
 		
 		<h4>child_removed event</h4>
 		
 		This event will be triggered once every time a child is removed. The
-		`DataSnapshot` passed into the callback will be the old data for the child that
-		was removed. A child will get removed when either:
+		`DataSnapshot` passed into the callback will be the old data for the child
+		that was removed. A child will get removed when either:
 		
 		- a client explicitly calls `remove()` on that child or one of its ancestors
 		- a client calls `set(null)` on that child or one of its ancestors
@@ -238,7 +245,7 @@ package firebase.database;
 		multiple changes to the child. The `DataSnapshot` passed to the callback will
 		contain the new child contents. For ordering purposes, the callback is also
 		passed a second argument which is a string containing the key of the previous
-		sibling child by sort order (or `null` if it is the first child).
+		sibling child by sort order, or `null` if it is the first child.
 		
 		<h4>child_moved event</h4>
 		
@@ -246,74 +253,78 @@ package firebase.database;
 		position relative to its siblings changes. The `DataSnapshot` passed to the
 		callback will be for the data of the child that has moved. It is also passed
 		a second argument which is a string containing the key of the previous
-		sibling child by sort order (or `null` if it is the first child).
+		sibling child by sort order, or `null` if it is the first child.
 	**/
 	function on(eventType:String, callback:Dynamic, ?cancelCallbackOrContext:haxe.extern.EitherType<Dynamic, Dynamic>, ?context:Dynamic):Dynamic;
 	/**
 		Detaches a callback previously attached with `on()`.
 		
-		Detach a callback previously attached with `on()`. Note that if `on()` was called
-		multiple times with the same eventType and callback, the callback will be
-		called multiple times for each event, and `off()` must be called multiple times
-		to remove the callback. Calling `off()` on a parent listener will not
-		automatically remove listeners registered on child nodes, `off()` must also be
-		called on any child listeners to remove the callback.
+		Detach a callback previously attached with `on()`. Note that if `on()` was
+		called multiple times with the same eventType and callback, the callback
+		will be called multiple times for each event, and `off()` must be called
+		multiple times to remove the callback. Calling `off()` on a parent listener
+		will not automatically remove listeners registered on child nodes, `off()`
+		must also be called on any child listeners to remove the callback.
 		
 		If a callback is not specified, all callbacks for the specified eventType
 		will be removed. Similarly, if no eventType or callback is specified, all
-		callbacks for the reference will be removed.
+		callbacks for the `Reference` will be removed.
 	**/
 	function off(?eventType:String, ?callback:Dynamic, ?context:Dynamic):Void;
 	/**
-		Listens for exactly one event of the specified event type, and then stops listening.
+		Listens for exactly one event of the specified event type, and then stops
+		listening.
 		
-		This is equivalent to calling `on()`, and then calling `off()` inside the
-		callback function. see `on()` for details on the event types.
+		This is equivalent to calling {@link firebase.database.Query#on `on()`}, and
+		then calling {@link firebase.database.Query#off `off()`} inside the callback
+		function. See {@link firebase.database.Query#on `on()`} for details on the
+		event types.
 	**/
 	function once(eventType:String, ?successCallback:Dynamic, ?failureCallbackOrContext:haxe.extern.EitherType<Dynamic, Dynamic>, ?context:Dynamic):js.Promise<Dynamic>;
 	/**
-		Generates a new Query limited to the first specific number of children.
+		Generates a new `Query` limited to the first specific number of children.
 		
 		The `limitToFirst()` method is used to set a maximum number of children to be
 		synced for a given callback. If we set a limit of 100, we will initially only
-		receive up to 100 `child_added` events. If we have less than 100 messages
-		stored in our database, a `child_added` event will fire for each message.
+		receive up to 100 `child_added` events. If we have fewer than 100 messages
+		stored in our Database, a `child_added` event will fire for each message.
 		However, if we have over 100 messages, we will only receive a `child_added`
 		event for the first 100 ordered messages. As items change, we will receive
-		`child_removed` events for each item that drops out of the active list, so that
-		the total number stays at 100.
+		`child_removed` events for each item that drops out of the active list so
+		that the total number stays at 100.
 		
 		You can read more about `limitToFirst()` in
 		{@link
-		 https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
-		 Sorting and filtering data}.
+		 https://firebase.google.com/docs/database/web/lists-of-data#filtering_data
+		 Filtering data}.
 	**/
 	function limitToFirst(limit:Float):firebase.database.Query;
 	/**
-		Generates a new Query object limited to the last specific number of children.
+		Generates a new `Query` object limited to the last specific number of
+		children.
 		
 		The `limitToLast()` method is used to set a maximum number of children to be
 		synced for a given callback. If we set a limit of 100, we will initially only
-		receive up to 100 `child_added` events. If we have less than 100 messages
-		stored in our database, a `child_added` event will fire for each message.
+		receive up to 100 `child_added` events. If we have fewer than 100 messages
+		stored in our Database, a `child_added` event will fire for each message.
 		However, if we have over 100 messages, we will only receive a `child_added`
 		event for the last 100 ordered messages. As items change, we will receive
-		`child_removed` events for each item that drops out of the active list, so that
-		the total number stays at 100.
+		`child_removed` events for each item that drops out of the active list so
+		that the total number stays at 100.
 		
 		You can read more about `limitToLast()` in
 		{@link
-		 https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
-		 Sorting and filtering data}.
+		 https://firebase.google.com/docs/database/web/lists-of-data#filtering_data
+		 Filtering data}.
 	**/
 	function limitToLast(limit:Float):firebase.database.Query;
 	/**
-		Generates a new Query object ordered by the specified child key.
+		Generates a new `Query` object ordered by the specified child key.
 		
-		Queries can only order by one key at a time. Calling `orderByChild()` multiple
-		times on the same query is an error.
+		Queries can only order by one key at a time. Calling `orderByChild()`
+		multiple times on the same query is an error.
 		
-		Firebase queries allow you to order your data by any child key, on the fly.
+		Firebase queries allow you to order your data by any child key on the fly.
 		However, if you know in advance what your indexes will be, you can define
 		them via the .indexOn rule in your Security Rules for better performance. See
 		the {@link https://firebase.google.com/docs/database/security/indexing-data
@@ -321,45 +332,45 @@ package firebase.database;
 		
 		You can read more about `orderByChild()` in
 		{@link
-		 https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
-		 Sorting and filtering data}.
+		 https://firebase.google.com/docs/database/web/lists-of-data#sort_data
+		 Sort data}.
 	**/
 	function orderByChild(path:String):firebase.database.Query;
 	/**
-		Generates a new Query object ordered by key.
+		Generates a new `Query` object ordered by key.
 		
-		Sorts the results of a query by their (ascending) key value.
+		Sorts the results of a query by their (ascending) key values.
 		
 		You can read more about `orderByKey()` in
 		{@link
-		 https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
-		 Sorting and filtering data}.
+		 https://firebase.google.com/docs/database/web/lists-of-data#sort_data
+		 Sort data}.
 	**/
 	function orderByKey():firebase.database.Query;
 	/**
-		Generates a new `Query` object order by priority.
+		Generates a new `Query` object ordered by priority.
 		
-		Applications need not use priority, but can order collections by
+		Applications need not use priority but can order collections by
 		ordinary properties (see
 		{@link
-		 https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
-		 Sorting and filtering data}).
+		 https://firebase.google.com/docs/database/web/lists-of-data#sort_data
+		 Sort data} for alternatives to priority.
 	**/
 	function orderByPriority():firebase.database.Query;
 	/**
-		Generates a new Query object ordered by child values.
+		Generates a new `Query` object ordered by value.
 		
-		If the children of a query are all scalar values (numbers or strings), you
-		can order the results by their (ascending) values.
+		If the children of a query are all scalar values (string, number, or
+		boolean), you can order the results by their (ascending) values.
 		
 		You can read more about `orderByValue()` in
 		{@link
-		 https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
-		 Sorting and filtering data}.
+		 https://firebase.google.com/docs/database/web/lists-of-data#sort_data
+		 Sort data}.
 	**/
 	function orderByValue():firebase.database.Query;
 	/**
-		Creates a Query with the specified starting point.
+		Creates a `Query` with the specified starting point.
 		
 		Using `startAt()`, `endAt()`, and `equalTo()` allows you to choose arbitrary
 		starting and ending points for your queries.
@@ -372,12 +383,12 @@ package firebase.database;
 		
 		You can read more about `startAt()` in
 		{@link
-		 https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
-		 Sorting and filtering data}.
+		 https://firebase.google.com/docs/database/web/lists-of-data#filtering_data
+		 Filtering data}.
 	**/
 	function startAt(value:haxe.extern.EitherType<Bool, haxe.extern.EitherType<String, Float>>, ?key:String):firebase.database.Query;
 	/**
-		Creates a Query with the specified ending point.
+		Creates a `Query` with the specified ending point.
 		
 		Using `startAt()`, `endAt()`, and `equalTo()` allows you to choose arbitrary
 		starting and ending points for your queries.
@@ -390,12 +401,12 @@ package firebase.database;
 		
 		You can read more about `endAt()` in
 		{@link
-		 https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
-		 Sorting and filtering data}.
+		 https://firebase.google.com/docs/database/web/lists-of-data#filtering_data
+		 Filtering data}.
 	**/
 	function endAt(value:haxe.extern.EitherType<Bool, haxe.extern.EitherType<String, Float>>, ?key:String):firebase.database.Query;
 	/**
-		Creates a Query which includes children which match the specified value.
+		Creates a `Query` that includes children that match the specified value.
 		
 		Using `startAt()`, `endAt()`, and `equalTo()` allows us to choose arbitrary
 		starting and ending points for our queries.
@@ -407,20 +418,24 @@ package firebase.database;
 		
 		You can read more about `equalTo()` in
 		{@link
-		 https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
-		 Sorting and filtering data}.
+		 https://firebase.google.com/docs/database/web/lists-of-data#filtering_data
+		 Filtering data}.
 	**/
 	function equalTo(value:haxe.extern.EitherType<Bool, haxe.extern.EitherType<String, Float>>, ?key:String):firebase.database.Query;
 	/**
-		Get the absolute URL for this location.
+		Gets the absolute URL for this location.
 		
 		The `toString()` method returns a URL that is ready to be put into a browser,
-		curl command, or a `firebase.database().refFromURL()` call. Since all of those
-		expect the URL to be url-encoded, `toString()` returns an encoded URL.
+		curl command, or a `firebase.database().refFromURL()` call. Since all of
+		those expect the URL to be url-encoded, `toString()` returns an encoded URL.
 		
-		Append '.json' to the URL when typed into a browser to download JSON
-		formatted data. If the location is secured (not publicly readable) you will
-		get a permission-denied error.
+		Append '.json' to the returned URL when typed into a browser to download
+		JSON-formatted data. If the location is secured (that is, not publicly
+		readable), you will get a permission-denied error.
 	**/
 	function toString():String;
+	/**
+		Returns a JSON-serializable representation of this object.
+	**/
+	function toJSON():Dynamic;
 }

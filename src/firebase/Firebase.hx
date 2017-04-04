@@ -1,73 +1,83 @@
 package firebase;
 @:jsRequire(#if firebase_admin "firebase-admin" #else "firebase" #end) extern class Firebase {
 	/**
-		Create (and intialize) a FirebaseApp.
+		Creates and initializes a Firebase {@link firebase.app.App app} instance.
+		
+		See
+		{@link
+		  https://firebase.google.com/docs/web/setup#add_firebase_to_your_app
+		  Add Firebase to your app} and
+		{@link
+		  https://firebase.google.com/docs/web/setup#initialize_multiple_apps
+		  Initialize multiple apps} for detailed documentation.
 	**/
 	static function initializeApp(options:Dynamic, ?name:String):firebase.app.App;
 	/**
-		Retrieve an instance of a FirebaseApp.
+		Retrieves a Firebase {@link firebase.app.App app} instance.
 		
-		With no arguments, this returns the default App.  With a single
-		string argument, it returns the named App.
+		When called with no arguments, the default app is returned. When an app name
+		is provided, the app corresponding to that name is returned.
 		
-		This function throws an exception if the app you are trying to access
-		does not exist.
-		
-		Usage: firebase.app()
+		An exception is thrown if the app being retrieved has not yet been
+		initialized.
 	**/
 	static function app(?name:String):firebase.app.App;
 	/**
-		A (read-only) array of all the initialized Apps.
+		A (read-only) array of all initialized apps.
 	**/
 	static var apps : Array<firebase.app.App>;
 	/**
-		The current SDK version ('3.6.0').
+		The current SDK version.
 	**/
 	static var SDK_VERSION : String;
 	/**
-		Gets the Auth object for the default App or a given App.
+		Gets the {@link firebase.auth.Auth `Auth`} service for the default app or a
+		given app.
 		
-		Usage:
-		
-		  firebase.auth()
-		  firebase.auth(app)
+		`firebase.auth()` can be called with no arguments to access the default app's
+		{@link firebase.auth.Auth `Auth`} service or as `firebase.auth(app)` to
+		access the {@link firebase.auth.Auth `Auth`} service associated with a
+		specific app.
 	**/
 	static function auth(?app:firebase.app.App):firebase.auth.Auth;
 	/**
-		Access the Database service for the default App (or a given app).
+		Gets the {@link firebase.database.Database `Database`} service for the
+		default app or a given app.
 		
-		`firebase.database()` can be called as a function to access the default
-		{@link firebase.database.Database}, or as `firebase.database(app)` to access
-		the database associated with a specific {@link firebase.app.App}.
+		`firebase.database()` can be called with no arguments to access the default
+		app's {@link firebase.database.Database `Database`} service or as
+		`firebase.database(app)` to access the
+		{@link firebase.database.Database `Database`} service associated with a
+		specific app.
 		
-		`firebase.database` is also a namespace that can be used to access
-		global constants and methods associated with the database service.
+		`firebase.database` is also a namespace that can be used to access global
+		constants and methods associated with the `Database` service.
 	**/
 	static function database(?app:firebase.app.App):firebase.database.Database;
 	/**
-		Create an object to access the Messaging service for the default App
-		(or a given app).
+		Gets the {@link firebase.messaging.Messaging `Messaging`} service for the
+		default app or a given app.
 		
-		`firebase.messaging()` can be called as a function to access the default
-		{@link firebase.messaging.Messaging}, or as `firebase.messaging(app)` to
-		access the messaging associated with a specific {@link firebase.app.App}.
+		`firebase.messaging()` can be called with no arguments to access the default
+		app's {@link firebase.messaging.Messaging `Messaging`} service or as
+		`firebase.messaging(app)` to access the
+		{@link firebase.messaging.Messaging `Messaging`} service associated with a
+		specific app.
 		
-		Calling `firebase.messaging()` in a service worker results in firebase
+		Calling `firebase.messaging()` in a service worker results in Firebase
 		generating notifications if the push message payload has a `notification`
 		parameter.
 	**/
 	static function messaging(?app:firebase.app.App):firebase.messaging.Messaging;
 	/**
-		The namespace for all Firebase Storage functionality.
-		The returned service is initialized with a particular app which contains the
-		project's storage location, or uses the default app if none is provided.
+		Gets the {@link firebase.storage.Storage `Storage`} service for the default
+		app or a given app.
 		
-		Usage (either):
-		
-		```
-		firebase.storage()
-		firebase.storage(app)
-		```
+		`firebase.storage()` can be called with no arguments to access the default
+		app's {@link firebase.storage.Storage `Storage`} service or as
+		`firebase.storage(app)` to access the
+		{@link firebase.storage.Storage `Storage`} service associated with a
+		specific app.
 	**/
 	static function storage(?app:firebase.app.App):firebase.storage.Storage;
 }

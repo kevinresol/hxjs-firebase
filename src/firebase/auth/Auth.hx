@@ -68,7 +68,8 @@ package firebase.auth;
 	**/
 	function applyActionCode(code:String):js.Promise<Dynamic>;
 	/**
-		The App associated with the Auth service instance.
+		The {@link firebase.app.App app} associated with the `Auth` service
+		instance.
 	**/
 	var app : firebase.app.App;
 	/**
@@ -118,7 +119,7 @@ package firebase.auth;
 	/**
 		Adds an observer for auth state changes.
 	**/
-	function onAuthStateChanged(nextOrObserver:haxe.extern.EitherType<Dynamic, Dynamic>, ?opt_error:Dynamic, ?opt_completed:Dynamic):Dynamic;
+	function onAuthStateChanged(nextOrObserver:haxe.extern.EitherType<Dynamic, Dynamic>, ?error:Dynamic, ?completed:Dynamic):Dynamic;
 	/**
 		Sends a password reset email to the given email address.
 		
@@ -394,7 +395,7 @@ package firebase.auth;
 		Creates a new custom token (JWT) that can be sent back to a client to use
 		with signInWithCustomToken.
 	**/
-	function createCustomToken(uid:String, ?developerClaims:Dynamic):js.Promise<String>;
+	function createCustomToken(uid:String, ?developerClaims:Dynamic):String;
 	/**
 		Verifies a ID token (JWT). Returns a Promise with the tokens claims. Rejects
 		the promise if the token could not be verified.

@@ -20,7 +20,7 @@ package firebase;
 		Returns the current token if it has not expired, otherwise this will
 		refresh the token and return a new one.
 	**/
-	function getToken(?opt_forceRefresh:Bool):js.Promise<String>;
+	function getToken(?forceRefresh:Bool):js.Promise<String>;
 	/**
 		Refreshes the current user, if signed in.
 	**/
@@ -184,6 +184,10 @@ package firebase;
 		</dl>
 	**/
 	function delete():js.Promise<Dynamic>;
+	/**
+		Returns a JSON-serializable representation of this object.
+	**/
+	function toJSON():Dynamic;
 	/**
 		Links the authenticated provider to the user account using a pop-up based
 		OAuth flow.
