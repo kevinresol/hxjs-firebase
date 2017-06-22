@@ -1,5 +1,5 @@
 package firebase.auth;
-@:jsRequire(#if firebase_admin "firebase-admin" #else "firebase" #end, "auth.TwitterAuthProvider") extern class TwitterAuthProvider implements firebase.auth.AuthProvider {
+@:jsRequire("firebase", "auth.TwitterAuthProvider") extern class TwitterAuthProvider implements firebase.auth.AuthProvider {
 	static var PROVIDER_ID : String;
 	static function credential(token:String, secret:String):firebase.auth.AuthCredential;
 	var providerId : String;
@@ -10,5 +10,5 @@ package firebase.auth;
 		Reserved required OAuth 1.0 parameters such as 'oauth_consumer_key',
 		'oauth_token', 'oauth_signature', etc are not allowed and will be ignored.
 	**/
-	function setCustomParameters(customOAuthParameters:Dynamic):Void;
+	function setCustomParameters(customOAuthParameters:Dynamic):firebase.auth.AuthProvider;
 }

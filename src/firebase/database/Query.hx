@@ -1,5 +1,5 @@
 package firebase.database;
-@:jsRequire(#if firebase_admin "firebase-admin" #else "firebase" #end, "database.Query") extern interface Query {
+@:jsRequire("firebase", "database.Query") extern interface Query {
 	/**
 		Returns a `Reference` to the `Query`'s location.
 	**/

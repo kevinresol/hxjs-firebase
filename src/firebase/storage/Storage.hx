@@ -1,5 +1,5 @@
 package firebase.storage;
-@:jsRequire(#if firebase_admin "firebase-admin" #else "firebase" #end, "storage.Storage") extern interface Storage {
+@:jsRequire("firebase", "storage.Storage") extern interface Storage {
 	/**
 		The {@link firebase.app.App app} associated with the `Storage` service
 		instance.

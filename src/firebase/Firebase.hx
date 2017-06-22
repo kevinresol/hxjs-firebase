@@ -1,5 +1,5 @@
 package firebase;
-@:jsRequire(#if firebase_admin "firebase-admin" #else "firebase" #end) extern class Firebase {
+#if firebase_no_require @:native("firebase") #else @:jsRequire("firebase") #end extern class Firebase {
 	/**
 		Creates and initializes a Firebase {@link firebase.app.App app} instance.
 		

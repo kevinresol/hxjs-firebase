@@ -1,5 +1,5 @@
 package firebase.database;
-@:jsRequire(#if firebase_admin "firebase-admin" #else "firebase" #end, "database.Database") extern interface Database {
+@:jsRequire("firebase", "database.Database") extern interface Database {
 	/**
 		The {@link firebase.app.App app} associated with the `Database` service
 		instance.

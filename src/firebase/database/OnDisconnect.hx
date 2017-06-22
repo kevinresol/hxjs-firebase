@@ -1,5 +1,5 @@
 package firebase.database;
-@:jsRequire(#if firebase_admin "firebase-admin" #else "firebase" #end, "database.OnDisconnect") extern interface OnDisconnect {
+@:jsRequire("firebase", "database.OnDisconnect") extern interface OnDisconnect {
 	/**
 		Cancels all previously queued `onDisconnect()` set or update events for this
 		location and all children.

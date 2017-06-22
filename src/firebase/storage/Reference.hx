@@ -1,5 +1,5 @@
 package firebase.storage;
-@:jsRequire(#if firebase_admin "firebase-admin" #else "firebase" #end, "storage.Reference") extern interface Reference {
+@:jsRequire("firebase", "storage.Reference") extern interface Reference {
 	/**
 		Returns a gs:// URL for this object in the form
 		  `gs://<bucket>/<path>/<to>/<object>`

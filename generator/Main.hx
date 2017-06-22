@@ -15,7 +15,7 @@ class Main {
 	static var types:Map<String, TypeDefinition>;
 	static var fields:Map<String, Array<Field>>;
 	
-	static var typeParamRe = ~/([^<>]*)(<(.*)>)?/;
+	static var typeParamRe = ~/([^<>]*)(<!?\??(.*)>)?/;
 	static var keywords = ['catch'];
 	
 	static function main() {
@@ -46,6 +46,7 @@ class Main {
 		fields = new Map();
 		
 		function addField(type:String, field:Field) {
+			if(type == null) return;
 			if(type == 'firebase') type = 'firebase.Firebase';
 			if(!fields.exists(type)) fields[type] = [];
 			fields[type].push(field);
@@ -96,7 +97,7 @@ class Main {
 						pos: null,
 					});
 				case 'member':
-					addField(item.memberof, {
+					if(item.type != null) addField(item.memberof, {
 						access: item.scope == 'static' ? [AStatic] : [],
 						doc: item.description,
 						kind: FVar(toHaxeType(item.type.names).type),
@@ -201,14 +202,15 @@ class Main {
 			if(!folder.exists()) folder.createDirectory();
 			var fullpath = folder + type.name + '.hx';
 			
-			// try {
+			try {
 				var source = printer.printTypeDefinition(type);
-				source = source.replace('@:jsRequire("firebase"', '@:jsRequire(#if firebase_admin "firebase-admin" #else "firebase" #end');
+				source = source.replace('@:jsRequire("firebase")', '#if firebase_no_require @:native("firebase") #else @:jsRequire("firebase") #end');
 				fullpath.saveContent(source); 
-			// } catch(e:Dynamic) {
-			// 	trace(type.name);
-			// 	trace(e);
-			// }
+			} catch(e:Dynamic) {
+				trace(type);
+				trace(type.name);
+				trace(e);
+			}
 		}
 		
 		// '$cwd/manual/firebase'.copy('$root/firebase');
@@ -240,24 +242,34 @@ class Main {
 	}
 	
 	static function toHaxeType(names:Array<String>):{ type : haxe.macro.ComplexType, optional : Bool } {
-		
 		function toType(name:String) {
+			name = name.trim();
+			if(name.startsWith('(') && name.endsWith(')')) name = name.substr(1, name.length - 2);
+			if(name.indexOf('|') != -1)
 			if(name.startsWith('!')) name = name.substr(1);
 			if(name.startsWith('?')) name = name.substr(1);
 			return switch name {
 				case v if(v.startsWith('{')):
-					var fields = [for(item in v.substr(1, v.length - 2).split(',')) {
-						var s = item.split(':');
-						{
-							name: s[0].trim(),
-							kind: FVar(toHaxeType([s[1].replace('?', '').trim()]).type),
-							meta: s[1].trim().startsWith('?') ? [{
-								name: ':optional',
+					var content = v.substr(1, v.length - 2);
+					var fields = 
+						if(content.trim() == '') []
+						else [for(item in content.split(',')) {
+							if(item.trim() == '') continue;
+							var s = item.split(':');
+							var typeStr = s[1].trim();
+							if(typeStr.startsWith('(') && typeStr.endsWith(')'))
+								typeStr = typeStr.substr(1, typeStr.length - 2);
+							
+							{
+								name: s[0].trim(),
+								kind: FVar(toHaxeType(typeStr.split('|')).type),
+								meta: s[1].trim().startsWith('?') ? [{
+									name: ':optional',
+									pos: null,
+								}] : null,
 								pos: null,
-							}] : null,
-							pos: null,
-						}
-					}];
+							}
+						}];
 					
 					TAnonymous(fields);
 					 

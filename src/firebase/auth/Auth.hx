@@ -1,5 +1,5 @@
 package firebase.auth;
-@:jsRequire(#if firebase_admin "firebase-admin" #else "firebase" #end, "auth.Auth") extern interface Auth {
+@:jsRequire("firebase", "auth.Auth") extern interface Auth {
 	/**
 		Checks a password reset code sent to the user by email or other out-of-band
 		mechanism.
@@ -117,9 +117,22 @@ package firebase.auth;
 	**/
 	function fetchProvidersForEmail(email:String):js.Promise<Array<String>>;
 	/**
-		Adds an observer for auth state changes.
+		Adds an observer for changes to the user's sign-in state.
+		
+		Prior to 4.0.0, this triggered the observer when users were signed in,
+		signed out, or when the user's ID token changed in situations such as token
+		expiry or password change. After 4.0.0, the observer is only triggered
+		on sign-in or sign-out.
+		
+		To keep the old behavior, see {@link firebase.auth.Auth#onIdTokenChanged}.
 	**/
 	function onAuthStateChanged(nextOrObserver:haxe.extern.EitherType<Dynamic, Dynamic>, ?error:Dynamic, ?completed:Dynamic):Dynamic;
+	/**
+		Adds an observer for changes to the signed-in user's ID token, which includes
+		sign-in, sign-out, and token refresh events. This method has the same
+		behavior as {@link firebase.auth.Auth#onAuthStateChanged} had prior to 4.0.0.
+	**/
+	function onIdTokenChanged(nextOrObserver:haxe.extern.EitherType<Dynamic, Dynamic>, ?error:Dynamic, ?completed:Dynamic):Dynamic;
 	/**
 		Sends a password reset email to the given email address.
 		
@@ -170,7 +183,7 @@ package firebase.auth;
 		    {@link firebase.auth.Auth#fetchProvidersForEmail} and then asking the
 		    user to sign in using one of the returned providers. Once the user is
 		    signed in, the original credential can be linked to the user with
-		    {@link firebase.User#link}.</dd>
+		    {@link firebase.User#linkWithCredential}.</dd>
 		<dt>auth/invalid-credential</dt>
 		<dd>Thrown if the credential is malformed or has expired.</dd>
 		<dt>auth/operation-not-allowed</dt>
@@ -189,9 +202,59 @@ package firebase.auth;
 		    {@link firebase.auth.EmailAuthProvider#credential} and the password is
 		    invalid for the given email, or if the account corresponding to the email
 		    does not have a password set.</dd>
+		<dt>auth/invalid-verification-code</dt>
+		<dd>Thrown if the credential is a
+		    {@link firebase.auth.PhoneAuthProvider#credential} and the verification
+		    code of the credential is not valid.</dd>
+		<dt>auth/invalid-verification-id</dt>
+		<dd>Thrown if the credential is a
+		    {@link firebase.auth.PhoneAuthProvider#credential}  and the verification
+		    ID of the credential is not valid.</dd>
 		</dl>
 	**/
 	function signInWithCredential(credential:firebase.auth.AuthCredential):js.Promise<firebase.User>;
+	/**
+		Asynchronously signs in with the given credentials, and returns any available
+		additional user information, such as user name.
+		
+		<h4>Error Codes</h4>
+		<dl>
+		<dt>auth/account-exists-with-different-credential</dt>
+		<dd>Thrown if there already exists an account with the email address
+		    asserted by the credential. Resolve this by calling
+		    {@link firebase.auth.Auth#fetchProvidersForEmail} and then asking the
+		    user to sign in using one of the returned providers. Once the user is
+		    signed in, the original credential can be linked to the user with
+		    {@link firebase.User#linkWithCredential}.</dd>
+		<dt>auth/invalid-credential</dt>
+		<dd>Thrown if the credential is malformed or has expired.</dd>
+		<dt>auth/operation-not-allowed</dt>
+		<dd>Thrown if the type of account corresponding to the credential
+		    is not enabled. Enable the account type in the Firebase Console, under
+		    the Auth tab.</dd>
+		<dt>auth/user-disabled</dt>
+		<dd>Thrown if the user corresponding to the given credential has been
+		    disabled.</dd>
+		<dt>auth/user-not-found</dt>
+		<dd>Thrown if signing in with a credential from
+		    {@link firebase.auth.EmailAuthProvider#credential} and there is no user
+		    corresponding to the given email. </dd>
+		<dt>auth/wrong-password</dt>
+		<dd>Thrown if signing in with a credential from
+		    {@link firebase.auth.EmailAuthProvider#credential} and the password is
+		    invalid for the given email, or if the account corresponding to the email
+		    does not have a password set.</dd>
+		<dt>auth/invalid-verification-code</dt>
+		<dd>Thrown if the credential is a
+		    {@link firebase.auth.PhoneAuthProvider#credential} and the verification
+		    code of the credential is not valid.</dd>
+		<dt>auth/invalid-verification-id</dt>
+		<dd>Thrown if the credential is a
+		    {@link firebase.auth.PhoneAuthProvider#credential}  and the verification
+		    ID of the credential is not valid.</dd>
+		</dl>
+	**/
+	function signInAndRetrieveDataWithCredential(credential:firebase.auth.AuthCredential):js.Promise<firebase.auth.UserCredential>;
 	/**
 		Asynchronously signs in using a custom token.
 		
@@ -237,6 +300,38 @@ package firebase.auth;
 	**/
 	function signInWithEmailAndPassword(email:String, password:String):js.Promise<firebase.User>;
 	/**
+		Asynchronously signs in using a phone number. This method sends a code via
+		SMS to the given phone number, and returns a
+		{@link firebase.auth.ConfirmationResult}. After the user provides the code
+		sent to their phone, call {@link firebase.auth.ConfirmationResult#confirm}
+		with the code to sign the user in.
+		
+		For abuse prevention, this method also requires a
+		{@link firebase.auth.ApplicationVerifier}. The Firebase Auth SDK includes
+		a reCAPTCHA-based implementation, {@link firebase.auth.RecaptchaVerifier}.
+		
+		<h4>Error Codes</h4>
+		<dl>
+		<dt>auth/captcha-check-failed</dt>
+		<dd>Thrown if the reCAPTCHA response token was invalid, expired, or if
+		    this method was called from a non-whitelisted domain.</dd>
+		<dt>auth/invalid-phone-number</dt>
+		<dd>Thrown if the phone number has an invalid format.</dd>
+		<dt>auth/missing-phone-number</dt>
+		<dd>Thrown if the phone number is missing.</dd>
+		<dt>auth/quota-exceeded</dt>
+		<dd>Thrown if the SMS quota for the Firebase project has been exceeded.</dd>
+		<dt>auth/user-disabled</dt>
+		<dd>Thrown if the user corresponding to the given phone number has been
+		    disabled.</dd>
+		<dt>auth/operation-not-allowed</dt>
+		<dd>Thrown if you have not enabled the provider in the Firebase Console. Go
+		    to the Firebase Console for your project, in the Auth section and the
+		    <strong>Sign in Method</strong> tab and configure the provider.</dd>
+		</dl>
+	**/
+	function signInWithPhoneNumber(phoneNumber:String, applicationVerifier:firebase.auth.ApplicationVerifier):js.Promise<firebase.auth.ConfirmationResult>;
+	/**
 		Asynchronously signs in as an anonymous user.
 		
 		If there is already an anonymous user signed in, that user will be returned;
@@ -271,8 +366,8 @@ package firebase.auth;
 		    and then asking the user to sign in using one of the returned providers.
 		    Once the user is signed in, the original credential retrieved from the
 		    error.credential can be linked to the user with
-		    {@link firebase.User#link} to prevent the user from signing in again
-		    to the original provider via popup or redirect. If you are using
+		    {@link firebase.User#linkWithCredential} to prevent the user from signing
+		    in again to the original provider via popup or redirect. If you are using
 		    redirects for sign in, save the credential in session storage and then
 		    retrieve on redirect and repopulate the credential using for example
 		    {@link firebase.auth.GoogleAuthProvider#credential} depending on the
@@ -344,8 +439,8 @@ package firebase.auth;
 		    and then asking the user to sign in using one of the returned providers.
 		    Once the user is signed in, the original credential retrieved from the
 		    error.credential can be linked to the user with
-		    {@link firebase.User#link} to prevent the user from signing in again
-		    to the original provider via popup or redirect. If you are using
+		    {@link firebase.User#linkWithCredential} to prevent the user from signing
+		    in again to the original provider via popup or redirect. If you are using
 		    redirects for sign in, save the credential in session storage and then
 		    retrieve on redirect and repopulate the credential using for example
 		    {@link firebase.auth.GoogleAuthProvider#credential} depending on the
@@ -374,8 +469,8 @@ package firebase.auth;
 		    you wish to continue signing in with that credential. To do so, call
 		    {@link firebase.auth.Auth#fetchProvidersForEmail}, sign in to
 		    <code>error.email</code> via one of the providers returned and then
-		    {@link firebase.User#link} the original credential to that newly signed
-		    in user.</dd>
+		    {@link firebase.User#linkWithCredential} the original credential to that
+		    newly signed in user.</dd>
 		<dt>auth/operation-not-allowed</dt>
 		<dd>Thrown if the type of account corresponding to the credential
 		    is not enabled. Enable the account type in the Firebase Console, under
@@ -391,14 +486,4 @@ package firebase.auth;
 		</dl>
 	**/
 	function getRedirectResult():js.Promise<firebase.auth.UserCredential>;
-	/**
-		Creates a new custom token (JWT) that can be sent back to a client to use
-		with signInWithCustomToken.
-	**/
-	function createCustomToken(uid:String, ?developerClaims:Dynamic):String;
-	/**
-		Verifies a ID token (JWT). Returns a Promise with the tokens claims. Rejects
-		the promise if the token could not be verified.
-	**/
-	function verifyIdToken(idToken:String):js.Promise<Dynamic>;
 }

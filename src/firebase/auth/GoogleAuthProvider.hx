@@ -1,5 +1,5 @@
 package firebase.auth;
-@:jsRequire(#if firebase_admin "firebase-admin" #else "firebase" #end, "auth.GoogleAuthProvider") extern class GoogleAuthProvider implements firebase.auth.AuthProvider {
+@:jsRequire("firebase", "auth.GoogleAuthProvider") extern class GoogleAuthProvider implements firebase.auth.AuthProvider {
 	static var PROVIDER_ID : String;
 	/**
 		Creates a credential for Google. At least one of ID token and access token
@@ -7,7 +7,7 @@ package firebase.auth;
 	**/
 	static function credential(?idToken:String, ?accessToken:String):firebase.auth.AuthCredential;
 	var providerId : String;
-	function addScope(scope:String):Void;
+	function addScope(scope:String):firebase.auth.AuthProvider;
 	/**
 		Sets the OAuth custom parameters to pass in a Google OAuth request for popup
 		and redirect sign-in operations.
@@ -19,5 +19,5 @@ package firebase.auth;
 		Reserved required OAuth 2.0 parameters such as 'client_id', 'redirect_uri',
 		'scope', 'response_type' and 'state' are not allowed and will be ignored.
 	**/
-	function setCustomParameters(customOAuthParameters:Dynamic):Void;
+	function setCustomParameters(customOAuthParameters:Dynamic):firebase.auth.AuthProvider;
 }

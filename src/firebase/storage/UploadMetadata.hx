@@ -1,5 +1,5 @@
 package firebase.storage;
-@:jsRequire(#if firebase_admin "firebase-admin" #else "firebase" #end, "storage.UploadMetadata") extern interface UploadMetadata extends firebase.storage.SettableMetadata {
+@:jsRequire("firebase", "storage.UploadMetadata") extern interface UploadMetadata extends firebase.storage.SettableMetadata {
 	/**
 		A Base64-encoded MD5 hash of the object being uploaded.
 	**/

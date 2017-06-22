@@ -1,5 +1,5 @@
 package firebase.app;
-@:jsRequire(#if firebase_admin "firebase-admin" #else "firebase" #end, "app.App") extern interface App {
+@:jsRequire("firebase", "app.App") extern interface App {
 	/**
 		The (read-only) name for this app.
 		
@@ -17,6 +17,7 @@ package firebase.app;
 		services.
 	**/
 	function delete():js.Promise<Dynamic>;
+	var INTERNAL : Dynamic;
 	/**
 		Gets the {@link firebase.auth.Auth `Auth`} service for the current app.
 	**/

@@ -1,5 +1,5 @@
 package firebase.database;
-@:jsRequire(#if firebase_admin "firebase-admin" #else "firebase" #end, "database.ThenableReference") extern interface ThenableReference extends firebase.database.Reference extends firebase.Thenable<Dynamic> {
+@:jsRequire("firebase", "database.ThenableReference") extern interface ThenableReference extends firebase.database.Reference extends firebase.Thenable<Dynamic> {
 	/**
 		The last part of the `Reference`'s path.
 		
@@ -26,6 +26,7 @@ package firebase.database;
 		The root `Reference` of the Database.
 	**/
 	var root : firebase.database.Reference;
+	var path : String;
 	/**
 		Writes data to this Database location.
 		

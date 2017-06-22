@@ -1,5 +1,5 @@
 package firebase.storage;
-@:jsRequire(#if firebase_admin "firebase-admin" #else "firebase" #end, "storage.UploadTaskSnapshot") extern interface UploadTaskSnapshot {
+@:jsRequire("firebase", "storage.UploadTaskSnapshot") extern interface UploadTaskSnapshot {
 	/**
 		The number of bytes that have been successfully uploaded so far.
 	**/

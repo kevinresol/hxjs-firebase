@@ -1,5 +1,5 @@
 package firebase;
-@:jsRequire(#if firebase_admin "firebase-admin" #else "firebase" #end, "FirebaseError") extern interface FirebaseError {
+@:jsRequire("firebase", "FirebaseError") extern interface FirebaseError {
 	/**
 		Error codes are strings using the following format: `"service/string-code"`.
 		Some examples include `"app/no-app"` and `"auth/user-not-found"`.

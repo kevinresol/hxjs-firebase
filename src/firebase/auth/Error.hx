@@ -1,5 +1,5 @@
 package firebase.auth;
-@:jsRequire(#if firebase_admin "firebase-admin" #else "firebase" #end, "auth.Error") extern interface Error {
+@:jsRequire("firebase", "auth.Error") extern interface Error {
 	/**
 		Unique error code.
 	**/

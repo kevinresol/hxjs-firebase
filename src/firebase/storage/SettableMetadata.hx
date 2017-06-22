@@ -1,5 +1,5 @@
 package firebase.storage;
-@:jsRequire(#if firebase_admin "firebase-admin" #else "firebase" #end, "storage.SettableMetadata") extern interface SettableMetadata {
+@:jsRequire("firebase", "storage.SettableMetadata") extern interface SettableMetadata {
 	/**
 		Served as the 'Cache-Control' header on object download.
 	**/
