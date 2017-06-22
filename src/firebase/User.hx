@@ -21,6 +21,7 @@ package firebase;
 		refresh the token and return a new one.
 	**/
 	function getToken(?forceRefresh:Bool):js.Promise<String>;
+	function getIdToken(?forceRefresh:Bool):js.Promise<String>;
 	/**
 		Refreshes the current user, if signed in.
 	**/
