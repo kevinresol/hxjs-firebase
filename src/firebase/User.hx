@@ -12,6 +12,10 @@ package firebase;
 	**/
 	var emailVerified : Bool;
 	/**
+		Additional metadata about the user.
+	**/
+	var metadata : firebase.auth.UserMetadata;
+	/**
 		Additional provider-specific information about the user.
 	**/
 	var providerData : Array<firebase.UserInfo>;
@@ -20,15 +24,6 @@ package firebase;
 		require explicitly refreshing tokens.
 	**/
 	var refreshToken : String;
-	/**
-		Returns a JWT token used to identify the user to a Firebase service.
-		
-		Returns the current token if it has not expired, otherwise this will
-		refresh the token and return a new one.
-		
-		This property is deprecated. Use {@link firebase.User#getIdToken} instead.
-	**/
-	function getToken(?forceRefresh:Bool):js.Promise<String>;
 	/**
 		Returns a JWT token used to identify the user to a Firebase service.
 		
@@ -45,8 +40,24 @@ package firebase;
 		
 		The verification process is completed by calling
 		{@link firebase.auth.Auth#applyActionCode}
+		
+		<h4>Error Codes</h4>
+		<dl>
+		<dt>auth/missing-android-pkg-name</dt>
+		<dd>An Android package name must be provided if the Android app is required
+		    to be installed.</dd>
+		<dt>auth/missing-continue-uri</dt>
+		<dd>A continue URL must be provided in the request.</dd>
+		<dt>auth/missing-ios-bundle-id</dt>
+		<dd>An iOS bundle ID must be provided if an App Store ID is provided.</dd>
+		<dt>auth/invalid-continue-uri</dt>
+		<dd>The continue URL provided in the request is invalid.</dd>
+		<dt>auth/unauthorized-continue-uri</dt>
+		<dd>The domain of the continue URL is not whitelisted. Whitelist
+		    the domain in the Firebase console.</dd>
+		</dl>
 	**/
-	function sendEmailVerification():js.Promise<Dynamic>;
+	function sendEmailVerification(?actionCodeSettings:firebase.auth.ActionCodeSettings):js.Promise<Dynamic>;
 	/**
 		Links the user account with the given credentials.
 		
@@ -80,7 +91,7 @@ package firebase;
 		    ({@link firebase.auth.AuthCredential}) fields are also provided.
 		    You have to link the credential to the existing user with that email if
 		    you wish to continue signing in with that credential. To do so, call
-		    {@link firebase.auth.Auth#fetchProvidersForEmail}, sign in to
+		    {@link firebase.auth.Auth#fetchSignInMethodsForEmail}, sign in to
 		    <code>error.email</code> via one of the providers returned and then
 		    {@link firebase.User#linkWithCredential} the original credential to that
 		    newly signed in user.</dd>
@@ -105,10 +116,13 @@ package firebase;
 		    ID of the credential is not valid.</dd>
 		</dl>
 	**/
-	function linkWithCredential(credential:firebase.auth.AuthCredential):js.Promise<firebase.User>;
+	function linkWithCredential(credential:firebase.auth.AuthCredential):js.Promise<firebase.auth.UserCredential>;
 	/**
 		Links the user account with the given credentials, and returns any available
 		additional user information, such as user name.
+		
+		This method is deprecated. Use
+		{@link firebase.User#linkWithCredential} instead.
 		
 		<h4>Error Codes</h4>
 		<dl>
@@ -140,7 +154,7 @@ package firebase;
 		    ({@link firebase.auth.AuthCredential}) fields are also provided.
 		    You have to link the credential to the existing user with that email if
 		    you wish to continue signing in with that credential. To do so, call
-		    {@link firebase.auth.Auth#fetchProvidersForEmail}, sign in to
+		    {@link firebase.auth.Auth#fetchSignInMethodsForEmail}, sign in to
 		    <code>error.email</code> via one of the providers returned and then
 		    {@link firebase.User#linkWithCredential} the original credential to that
 		    newly signed in user.</dd>
@@ -248,12 +262,15 @@ package firebase;
 		    ID of the credential is not valid.</dd>
 		</dl>
 	**/
-	function reauthenticateWithCredential(credential:firebase.auth.AuthCredential):js.Promise<Dynamic>;
+	function reauthenticateWithCredential(credential:firebase.auth.AuthCredential):js.Promise<firebase.auth.UserCredential>;
 	/**
 		Re-authenticates a user using a fresh credential, and returns any available
 		additional user information, such as user name. Use before operations
 		such as {@link firebase.User#updatePassword} that require tokens from recent
 		sign-in attempts.
+		
+		This method is deprecated. Use
+		{@link firebase.User#reauthenticateWithCredential} instead.
 		
 		<h4>Error Codes</h4>
 		<dl>
@@ -284,7 +301,7 @@ package firebase;
 		    ID of the credential is not valid.</dd>
 		</dl>
 	**/
-	function reauthenticateAndRetrieveDataWithCredential(credential:firebase.auth.AuthCredential):js.Promise<Dynamic>;
+	function reauthenticateAndRetrieveDataWithCredential(credential:firebase.auth.AuthCredential):js.Promise<firebase.auth.UserCredential>;
 	/**
 		Re-authenticates a user using a fresh credential. Use before operations
 		such as {@link firebase.User#updatePassword} that require tokens from recent

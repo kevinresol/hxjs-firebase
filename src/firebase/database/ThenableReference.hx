@@ -1,5 +1,5 @@
 package firebase.database;
-@:jsRequire("firebase", "database.ThenableReference") extern interface ThenableReference extends firebase.database.Reference extends firebase.Thenable<Dynamic> {
+@:jsRequire("firebase", "database.ThenableReference") extern interface ThenableReference extends firebase.database.Reference {
 	/**
 		The last part of the `Reference`'s path.
 		
@@ -51,7 +51,7 @@ package firebase.database;
 		A single `set()` will generate a single "value" event at the location where
 		the `set()` was performed.
 	**/
-	function set(value:Dynamic, ?onComplete:Dynamic):js.Promise<Dynamic>;
+	function set(value:Dynamic, ?onComplete:haxe.Constraints.Function):js.Promise<Dynamic>;
 	/**
 		Writes multiple values to the Database at once.
 		
@@ -85,7 +85,7 @@ package firebase.database;
 		 https://firebase.googleblog.com/2015/09/introducing-multi-location-updates-and_86.html
 		 Introducing multi-location updates and more}.
 	**/
-	function update(values:Dynamic, ?onComplete:Dynamic):js.Promise<Dynamic>;
+	function update(values:Dynamic, ?onComplete:haxe.Constraints.Function):js.Promise<Dynamic>;
 	/**
 		Writes data the Database location. Like `set()` but also specifies the
 		priority for that data.
@@ -96,7 +96,7 @@ package firebase.database;
 		 https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
 		 Sorting and filtering data}).
 	**/
-	function setWithPriority(newVal:Dynamic, newPriority:haxe.extern.EitherType<Float, String>, ?onComplete:Dynamic):js.Promise<Dynamic>;
+	function setWithPriority(newVal:Dynamic, newPriority:haxe.extern.EitherType<Float, String>, ?onComplete:haxe.Constraints.Function):js.Promise<Dynamic>;
 	/**
 		Removes the data at this Database location.
 		
@@ -108,7 +108,7 @@ package firebase.database;
 		when complete. If provided, the onComplete callback will be called
 		asynchronously after synchronization has finished.
 	**/
-	function remove(?onComplete:Dynamic):js.Promise<Dynamic>;
+	function remove(?onComplete:haxe.Constraints.Function):js.Promise<Dynamic>;
 	/**
 		Atomically modifies the data at this location.
 		
@@ -135,7 +135,7 @@ package firebase.database;
 		transactions requires the client to read the data in order to transactionally
 		update it.
 	**/
-	function transaction(transactionUpdate:Dynamic, ?onComplete:Dynamic, ?applyLocally:Bool):js.Promise<{ var committed : Bool; @:optional
+	function transaction(transactionUpdate:haxe.Constraints.Function, ?onComplete:haxe.Constraints.Function, ?applyLocally:Bool):js.Promise<{ var committed : Bool; @:optional
 	var snapshot : firebase.database.DataSnapshot; }>;
 	/**
 		Sets a priority for the data at this Database location.
@@ -146,7 +146,7 @@ package firebase.database;
 		 https://firebase.google.com/docs/database/web/lists-of-data#sorting_and_filtering_data
 		 Sorting and filtering data}).
 	**/
-	function setPriority(priority:haxe.extern.EitherType<Float, String>, onComplete:Dynamic):js.Promise<Dynamic>;
+	function setPriority(priority:haxe.extern.EitherType<Float, String>, onComplete:haxe.Constraints.Function):js.Promise<Dynamic>;
 	/**
 		Generates a new child location using a unique key and returns its
 		`Reference`.
@@ -172,7 +172,7 @@ package firebase.database;
 		 https://firebase.googleblog.com/2015/02/the-2120-ways-to-ensure-unique_68.html
 		 The 2^120 Ways to Ensure Unique Identifiers}
 	**/
-	function push(?value:Dynamic, ?onComplete:Dynamic):firebase.database.ThenableReference;
+	function push(?value:Dynamic, ?onComplete:haxe.Constraints.Function):firebase.database.ThenableReference;
 	/**
 		Returns an `OnDisconnect` object - see
 		{@link
@@ -256,7 +256,7 @@ package firebase.database;
 		a second argument which is a string containing the key of the previous
 		sibling child by sort order, or `null` if it is the first child.
 	**/
-	function on(eventType:String, callback:Dynamic, ?cancelCallbackOrContext:haxe.extern.EitherType<Dynamic, Dynamic>, ?context:Dynamic):Dynamic;
+	function on(eventType:String, callback:haxe.Constraints.Function, ?cancelCallbackOrContext:haxe.extern.EitherType<Dynamic, haxe.Constraints.Function>, ?context:Dynamic):haxe.Constraints.Function;
 	/**
 		Detaches a callback previously attached with `on()`.
 		
@@ -271,7 +271,7 @@ package firebase.database;
 		will be removed. Similarly, if no eventType or callback is specified, all
 		callbacks for the `Reference` will be removed.
 	**/
-	function off(?eventType:String, ?callback:Dynamic, ?context:Dynamic):Void;
+	function off(?eventType:String, ?callback:haxe.Constraints.Function, ?context:Dynamic):Void;
 	/**
 		Listens for exactly one event of the specified event type, and then stops
 		listening.
@@ -281,7 +281,7 @@ package firebase.database;
 		function. See {@link firebase.database.Query#on `on()`} for details on the
 		event types.
 	**/
-	function once(eventType:String, ?successCallback:Dynamic, ?failureCallbackOrContext:haxe.extern.EitherType<Dynamic, Dynamic>, ?context:Dynamic):js.Promise<Dynamic>;
+	function once(eventType:String, ?successCallback:haxe.Constraints.Function, ?failureCallbackOrContext:haxe.extern.EitherType<Dynamic, haxe.Constraints.Function>, ?context:Dynamic):js.Promise<Dynamic>;
 	/**
 		Generates a new `Query` limited to the first specific number of children.
 		

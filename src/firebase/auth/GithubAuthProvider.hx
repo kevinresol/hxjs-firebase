@@ -1,7 +1,12 @@
 package firebase.auth;
 @:jsRequire("firebase", "auth.GithubAuthProvider") extern class GithubAuthProvider implements firebase.auth.AuthProvider {
 	static var PROVIDER_ID : String;
-	static function credential(token:String):firebase.auth.AuthCredential;
+	/**
+		This corresponds to the sign-in method identifier as returned in
+		{@link firebase.auth.Auth#fetchSignInMethodsForEmail}.
+	**/
+	static var GITHUB_SIGN_IN_METHOD : String;
+	static function credential(token:String):firebase.auth.OAuthCredential;
 	var providerId : String;
 	function addScope(scope:String):firebase.auth.AuthProvider;
 	/**

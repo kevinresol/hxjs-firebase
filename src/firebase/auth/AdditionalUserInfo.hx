@@ -5,5 +5,5 @@ extern typedef AdditionalUserInfo = {
 		provider.
 	**/
 	var AdditionalUserInfo : { var providerId : String; @:optional
-	var profile : Dynamic; var username : String; };
+	var profile : Dynamic; var username : String; var isNewUser : Bool; };
 }

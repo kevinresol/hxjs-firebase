@@ -2,10 +2,15 @@ package firebase.auth;
 @:jsRequire("firebase", "auth.GoogleAuthProvider") extern class GoogleAuthProvider implements firebase.auth.AuthProvider {
 	static var PROVIDER_ID : String;
 	/**
+		This corresponds to the sign-in method identifier as returned in
+		{@link firebase.auth.Auth#fetchSignInMethodsForEmail}.
+	**/
+	static var GOOGLE_SIGN_IN_METHOD : String;
+	/**
 		Creates a credential for Google. At least one of ID token and access token
 		is required.
 	**/
-	static function credential(?idToken:String, ?accessToken:String):firebase.auth.AuthCredential;
+	static function credential(?idToken:String, ?accessToken:String):firebase.auth.OAuthCredential;
 	var providerId : String;
 	function addScope(scope:String):firebase.auth.AuthProvider;
 	/**

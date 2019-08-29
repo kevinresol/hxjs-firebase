@@ -4,12 +4,12 @@ package firebase.storage;
 		This object behaves like a Promise, and resolves with its snapshot data when
 		the upload completes.
 	**/
-	function then(?onFulfilled:Dynamic, ?onRejected:Dynamic):js.Promise<Dynamic>;
+	function then(?onFulfilled:haxe.Constraints.Function, ?onRejected:haxe.Constraints.Function):js.Promise<Dynamic>;
 	/**
 		Equivalent to calling `then(null, onRejected)`.
 	**/
 	@:native("catch")
-	function catch_(onRejected:Dynamic):js.Promise<Dynamic>;
+	function catch_(onRejected:haxe.Constraints.Function):js.Promise<Dynamic>;
 	/**
 		Listens for events on this task.
 		
@@ -25,7 +25,7 @@ package firebase.storage;
 		when you add your callbacks, you get a function back. You can call this
 		function to unregister the associated callbacks.
 	**/
-	function on(event:firebase.storage.TaskEvent, ?nextOrObserver:haxe.extern.EitherType<Dynamic, Dynamic>, ?error:Dynamic, ?complete:Dynamic):haxe.extern.EitherType<Dynamic, Dynamic>;
+	function on(event:firebase.storage.TaskEvent, ?nextOrObserver:haxe.extern.EitherType<haxe.Constraints.Function, firebase.Observer<haxe.extern.EitherType<js.Error, firebase.storage.UploadTaskSnapshot>>>, ?error:haxe.Constraints.Function, ?complete:firebase.CompleteFn):haxe.extern.EitherType<haxe.Constraints.Function, firebase.Unsubscribe>;
 	/**
 		Resumes a paused task. Has no effect on a running or failed task.
 	**/

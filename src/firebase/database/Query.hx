@@ -75,7 +75,7 @@ package firebase.database;
 		a second argument which is a string containing the key of the previous
 		sibling child by sort order, or `null` if it is the first child.
 	**/
-	function on(eventType:String, callback:Dynamic, ?cancelCallbackOrContext:haxe.extern.EitherType<Dynamic, Dynamic>, ?context:Dynamic):Dynamic;
+	function on(eventType:String, callback:haxe.Constraints.Function, ?cancelCallbackOrContext:haxe.extern.EitherType<Dynamic, haxe.Constraints.Function>, ?context:Dynamic):haxe.Constraints.Function;
 	/**
 		Detaches a callback previously attached with `on()`.
 		
@@ -90,7 +90,7 @@ package firebase.database;
 		will be removed. Similarly, if no eventType or callback is specified, all
 		callbacks for the `Reference` will be removed.
 	**/
-	function off(?eventType:String, ?callback:Dynamic, ?context:Dynamic):Void;
+	function off(?eventType:String, ?callback:haxe.Constraints.Function, ?context:Dynamic):Void;
 	/**
 		Listens for exactly one event of the specified event type, and then stops
 		listening.
@@ -100,7 +100,7 @@ package firebase.database;
 		function. See {@link firebase.database.Query#on `on()`} for details on the
 		event types.
 	**/
-	function once(eventType:String, ?successCallback:Dynamic, ?failureCallbackOrContext:haxe.extern.EitherType<Dynamic, Dynamic>, ?context:Dynamic):js.Promise<Dynamic>;
+	function once(eventType:String, ?successCallback:haxe.Constraints.Function, ?failureCallbackOrContext:haxe.extern.EitherType<Dynamic, haxe.Constraints.Function>, ?context:Dynamic):js.Promise<Dynamic>;
 	/**
 		Generates a new `Query` limited to the first specific number of children.
 		

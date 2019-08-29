@@ -21,4 +21,8 @@ package firebase;
 		The URL of the user's profile picture (if available).
 	**/
 	var photoURL : String;
+	/**
+		The user's E.164 formatted phone number (if available).
+	**/
+	var phoneNumber : String;
 }

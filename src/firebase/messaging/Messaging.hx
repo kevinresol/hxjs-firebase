@@ -16,7 +16,7 @@ package firebase.messaging;
 		has invalidated your existing token and you need to call `getToken()`
 		to get a new token.
 	**/
-	function onTokenRefresh(nextOrObserver:haxe.extern.EitherType<Dynamic, Dynamic>):Dynamic;
+	function onTokenRefresh(nextOrObserver:haxe.extern.EitherType<haxe.Constraints.Function, firebase.Observer<haxe.extern.EitherType<Dynamic, Dynamic>>>):firebase.Unsubscribe;
 	/**
 		When a push message is received and the user is currently on a page
 		for your origin, the message is passed to the page and an `onMessage()`
@@ -25,7 +25,7 @@ package firebase.messaging;
 		NOTE: These events are dispatched when you have called
 		`setBackgroundMessageHandler()` in your service worker.
 	**/
-	function onMessage(nextOrObserver:haxe.extern.EitherType<Dynamic, Dynamic>):Dynamic;
+	function onMessage(nextOrObserver:haxe.extern.EitherType<haxe.Constraints.Function, firebase.Observer<haxe.extern.EitherType<Dynamic, Dynamic>>>):firebase.Unsubscribe;
 	/**
 		To forceably stop a registration token from being used, delete it
 		by calling this method.
@@ -44,5 +44,5 @@ package firebase.messaging;
 		Your callback should return a promise that, once resolved, has
 		shown a notification.
 	**/
-	function setBackgroundMessageHandler(callback:Dynamic):Void;
+	function setBackgroundMessageHandler(callback:haxe.Constraints.Function):Void;
 }

@@ -8,12 +8,12 @@ package firebase.database;
 		parent location, the write at this location will be canceled, though writes
 		to sibling locations will still occur.
 	**/
-	function cancel(?onComplete:Dynamic):js.Promise<Dynamic>;
+	function cancel(?onComplete:haxe.Constraints.Function):js.Promise<Dynamic>;
 	/**
 		Ensures the data at this location is deleted when the client is disconnected
 		(due to closing the browser, navigating to a new page, or network issues).
 	**/
-	function remove(?onComplete:Dynamic):js.Promise<Dynamic>;
+	function remove(?onComplete:haxe.Constraints.Function):js.Promise<Dynamic>;
 	/**
 		Ensures the data at this location is set to the specified value when the
 		client is disconnected (due to closing the browser, navigating to a new page,
@@ -30,13 +30,13 @@ package firebase.database;
 		operation to occur each time a disconnect occurs, you'll need to re-establish
 		the `onDisconnect` operations each time.
 	**/
-	function set(value:Dynamic, ?onComplete:Dynamic):js.Promise<Dynamic>;
+	function set(value:Dynamic, ?onComplete:haxe.Constraints.Function):js.Promise<Dynamic>;
 	/**
 		Ensures the data at this location is set to the specified value and priority
 		when the client is disconnected (due to closing the browser, navigating to a
 		new page, or network issues).
 	**/
-	function setWithPriority(value:Dynamic, priority:haxe.extern.EitherType<String, Float>, ?onComplete:Dynamic):js.Promise<Dynamic>;
+	function setWithPriority(value:Dynamic, priority:haxe.extern.EitherType<String, Float>, ?onComplete:haxe.Constraints.Function):js.Promise<Dynamic>;
 	/**
 		Writes multiple values at this location when the client is disconnected (due
 		to closing the browser, navigating to a new page, or network issues).
@@ -53,5 +53,5 @@ package firebase.database;
 		See more examples using the connected version of
 		{@link firebase.database.Reference#update `update()`}.
 	**/
-	function update(values:Dynamic, ?onComplete:Dynamic):js.Promise<Dynamic>;
+	function update(values:Dynamic, ?onComplete:haxe.Constraints.Function):js.Promise<Dynamic>;
 }

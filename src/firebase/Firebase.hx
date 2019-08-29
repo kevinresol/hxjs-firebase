@@ -1,5 +1,5 @@
 package firebase;
-#if firebase_no_require @:native("firebase") #else @:jsRequire("firebase") #end extern class Firebase {
+#if firebase_global @:native("firebase") #else @:jsRequire("firebase") #end extern class Firebase {
 	/**
 		Creates and initializes a Firebase {@link firebase.app.App app} instance.
 		
@@ -54,6 +54,8 @@ package firebase;
 		constants and methods associated with the `Database` service.
 	**/
 	static function database(?app:firebase.app.App):firebase.database.Database;
+	static function firestore(?app:firebase.app.App):firebase.firestore.Firestore;
+	static function firestore():Void;
 	/**
 		Gets the {@link firebase.messaging.Messaging `Messaging`} service for the
 		default app or a given app.

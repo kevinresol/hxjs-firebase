@@ -52,6 +52,13 @@ class Main {
 			fields[type].push(field);
 		}
 		
+		function isEnum(name:String):Bool {
+			return switch items.find(item -> item.longname == name) {
+				case null: false;
+				case item: item.isEnum;
+			}
+		}
+		
 		for(item in items) {
 			if(item.memberof == 'firebase') {
 				if(item.kind != 'class' && item.params != null) item.kind = 'function';
@@ -96,6 +103,19 @@ class Main {
 						name: name,
 						pos: null,
 					});
+				case 'member' if(item.isEnum && item.scope == 'static'):
+					if(!types.exists(item.longname)) {
+						createTypeDefinition(item.longname, TDAbstract(toHaxeType(item.type.names).type, [], []));
+					}
+				case 'member' if(isEnum(item.memberof)):
+					addField(item.memberof, {
+						access: [],
+						doc: item.description,
+						kind: FVar(null),
+						meta: null,
+						name: item.name,
+						pos: null,
+					});
 				case 'member':
 					if(item.type != null) addField(item.memberof, {
 						access: item.scope == 'static' ? [AStatic] : [],
@@ -123,7 +143,7 @@ class Main {
 						var interfaces = [];
 						if(item.augments != null) for(a in item.augments) {
 							switch kindOf(a) {
-								case {kind: 'interface', name: name, params: params}: interfaces.push(asTypePath(name, params));
+								case {kind: 'interface' | 'class', name: name, params: params}: interfaces.push(asTypePath(name, params));
 								case v: throw 'unhandled kind "$v"';
 							}
 						}
@@ -191,6 +211,9 @@ class Main {
 		var printer = new Printer();
 		var cwd = Sys.programPath().directory();
 		var root = '$cwd/../src/';
+		
+		var subtypes = [];
+		
 		for(type in types) {
 			// skip promise
 			switch type.name {
@@ -198,13 +221,24 @@ class Main {
 				case 'Thenable': continue; // we have some manual adjustments done, don't override
 				default: 
 			}
+			
+			// append this type to existing .hx file
+			switch type.pack {
+				case []: false;
+				case v:
+					if(isCapitalLetter(v[v.length - 1].charCodeAt(0)) && types.exists(v.join('.'))) {
+						subtypes.push(type);
+						continue;
+					}
+			}
+			
 			var folder = root + type.pack.join('/') + '/';
-			if(!folder.exists()) folder.createDirectory();
+			if(!FileSystem.exists(folder)) folder.createDirectory();
 			var fullpath = folder + type.name + '.hx';
 			
 			try {
 				var source = printer.printTypeDefinition(type);
-				source = source.replace('@:jsRequire("firebase")', '#if firebase_no_require @:native("firebase") #else @:jsRequire("firebase") #end');
+				source = source.replace('@:jsRequire("firebase")', '#if firebase_global @:native("firebase") #else @:jsRequire("firebase") #end');
 				fullpath.saveContent(source); 
 			} catch(e:Dynamic) {
 				trace(type);
@@ -213,24 +247,59 @@ class Main {
 			}
 		}
 		
+		for(type in subtypes) {
+			var fullpath = root + type.pack.join('/') + '.hx';
+			var source = printer.printTypeDefinition(type);
+			source = source.replace('@:jsRequire("firebase")', '#if firebase_global @:native("firebase") #else @:jsRequire("firebase") #end');
+			source = source.split('\n').filter(v -> !v.startsWith('package')).join('\n');
+			fullpath.saveContent(fullpath.getContent() + '\n' + source); 
+		}
+		
 		// '$cwd/manual/firebase'.copy('$root/firebase');
 		
+	}
+	
+	static function isCapitalLetter(code:Int):Bool {
+		var s = String.fromCharCode(code);
+		return s == s.toUpperCase();
 	}
 	
 	static function createTypeDefinition(fullname:String, kind:TypeDefKind) {
 		if(!fields.exists(fullname)) fields[fullname] = [];
 		var pack = fullname.split('.');
 		var name = pack.pop();
+		
+		function makeJsRequireMeta() {
+			return {
+				name: ':jsRequire', 
+				params:
+					switch pack {
+						case []:
+							[{expr: EConst(CString(name)), pos: null}];
+						case _:
+							[{expr: EConst(CString(pack[0])), pos: null}, {expr: EConst(CString(pack.slice(1).concat([name]).join('.'))), pos: null}];
+					},
+				pos: null,
+			}
+		}
+			
 		types[fullname] = {
 			fields: [],
 			isExtern: true,
 			kind: kind,
 			meta: switch kind {
-				case TDClass(_): [{
-					name: ':jsRequire', 
-					params: [{expr: EConst(CString(pack[0])), pos: null}, {expr: EConst(CString(pack.slice(1).concat([name]).join('.'))), pos: null}],
-					pos: null,
-				}];
+				case TDClass(_):
+					[makeJsRequireMeta()];
+				case TDAbstract(_):
+					[
+						makeJsRequireMeta(),
+						{
+							name: ':enum',
+							params: [],
+							pos: null,
+						}
+					];
+					
 				default: [];
 			},
 			name: name,
@@ -242,13 +311,16 @@ class Main {
 	}
 	
 	static function toHaxeType(names:Array<String>):{ type : haxe.macro.ComplexType, optional : Bool } {
-		function toType(name:String) {
+		function toType(name:String):ComplexType {
 			name = name.trim();
 			if(name.startsWith('(') && name.endsWith(')')) name = name.substr(1, name.length - 2);
-			if(name.indexOf('|') != -1)
+			// if(name.indexOf('|') != -1)
 			if(name.startsWith('!')) name = name.substr(1);
 			if(name.startsWith('?')) name = name.substr(1);
 			return switch name {
+				case 'Error': macro:js.Error;
+				case 'firebase.Promise': macro:js.Promise<Dynamic>;
+				case 'firebase.Thenable': macro:js.Promise.Thenable<Dynamic>;
 				case v if(v.startsWith('{')):
 					var content = v.substr(1, v.length - 2);
 					var fields = 
@@ -279,16 +351,20 @@ class Main {
 						case v if(v.indexOf('Promise') != -1): 'js.Promise';
 						case v if(v.endsWith('.')): v.substr(0, v.length - 1);
 						case v: v;
-					} 
+					}
 					if(type == 'Object') type = 'Dynamic';
 					var params = typeParamRe.matched(3);
-					TPath(asTypePath(type, [TPType(toType(params))]));
-					// TPath(asTypePath(type, params.split(',').map(function(n) return TPType(toType(n)))));
+					if(type == 'firebase.Observer') {
+						TPath(asTypePath(type, [TPType(toHaxeType(params.split(',')).type)]));
+					} else {
+						TPath(asTypePath(type, [TPType(toType(params))]));
+						// TPath(asTypePath(type, params.split(',').map(function(n) return TPType(toType(n)))));
+					}
 				case v if(v.indexOf('.') != -1):
 					if(v.indexOf('Promise') != -1) TPath(asTypePath('js.Promise', [TPType(macro:Dynamic)]));
 					else TPath(asTypePath(v));
 				case 'boolean': macro:Bool;
-				case 'function': macro:Dynamic; // TODO
+				case 'function': macro:haxe.Constraints.Function; // TODO
 				case 'string': macro:String;
 				case 'number': macro:Float;
 				case 'void': macro:Dynamic;
@@ -355,6 +431,7 @@ typedef Item = {
 	tags:Array<Tag>,
 	longname:String,
 	scope:String,
+	?isEnum:Bool,
 	?memberof:String,
 	?type:JsType,
 	?params:Array<Param>,

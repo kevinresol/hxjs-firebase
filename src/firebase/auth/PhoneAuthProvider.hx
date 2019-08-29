@@ -2,6 +2,11 @@ package firebase.auth;
 @:jsRequire("firebase", "auth.PhoneAuthProvider") extern class PhoneAuthProvider implements firebase.auth.AuthProvider {
 	static var PROVIDER_ID : String;
 	/**
+		This corresponds to the sign-in method identifier as returned in
+		{@link firebase.auth.Auth#fetchSignInMethodsForEmail}.
+	**/
+	static var PHONE_SIGN_IN_METHOD : String;
+	/**
 		Creates a phone auth credential, given the verification ID from
 		{@link firebase.auth.PhoneAuthProvider#verifyPhoneNumber} and the code
 		that was sent to the user's mobile device.

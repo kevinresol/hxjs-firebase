@@ -58,7 +58,7 @@ package firebase.database;
 		ordered by key (unless priorities are used, in which case, results are
 		returned by priority).
 	**/
-	function forEach(action:Dynamic):Bool;
+	function forEach(action:haxe.Constraints.Function):Bool;
 	/**
 		Returns whether or not the `DataSnapshot` has any non-`null` child
 		properties.

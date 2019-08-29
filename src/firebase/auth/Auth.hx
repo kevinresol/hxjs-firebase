@@ -77,6 +77,53 @@ package firebase.auth;
 	**/
 	var currentUser : firebase.User;
 	/**
+		Changes the current type of persistence on the current Auth instance for the
+		currently saved Auth session and applies this type of persistence for
+		future sign-in requests, including sign-in with redirect requests. This will
+		return a promise that will resolve once the state finishes copying from one
+		type of storage to the other.
+		Calling a sign-in method after changing persistence will wait for that
+		persistence change to complete before applying it on the new Auth state.
+		
+		This makes it easy for a user signing in to specify whether their session
+		should be remembered or not. It also makes it easier to never persist the
+		Auth state for applications that are shared by other users or have sensitive
+		data.
+		
+		The default for web browser apps and React Native apps is 'local' (provided
+		the browser supports this mechanism) whereas it is 'none' for Node.js backend
+		apps.
+		
+		<h4>Error Codes (thrown synchronously)</h4>
+		<dl>
+		<dt>auth/invalid-persistence-type</dt>
+		<dd>Thrown if the specified persistence type is invalid.</dd>
+		<dt>auth/unsupported-persistence-type</dt>
+		<dd>Thrown if the current environment does not support the specified
+		    persistence type.</dd>
+		</dl>
+	**/
+	function setPersistence(persistence:firebase.auth.Auth.Persistence):js.Promise<Dynamic>;
+	/**
+		The current Auth instance's language code. This is a readable/writable
+		property. When set to null, the default Firebase Console language setting
+		is applied. The language code will propagate to email action templates
+		(password reset, email verification and email change revocation), SMS
+		templates for phone authentication, reCAPTCHA verifier and OAuth
+		popup/redirect operations provided the specified providers support
+		localization with the language code specified.
+	**/
+	var languageCode : String;
+	/**
+		Sets the current language to the default device/browser preference.
+	**/
+	function useDeviceLanguage():Void;
+	/**
+		The current Auth instance's settings. This is used to edit/read configuration
+		related options like app verification mode for phone authentication.
+	**/
+	var settings : firebase.auth.AuthSettings;
+	/**
 		Creates a new user account associated with the specified email address and
 		password.
 		
@@ -104,10 +151,12 @@ package firebase.auth;
 		<dd>Thrown if the password is not strong enough.</dd>
 		</dl>
 	**/
-	function createUserWithEmailAndPassword(email:String, password:String):js.Promise<firebase.User>;
+	function createUserWithEmailAndPassword(email:String, password:String):js.Promise<firebase.auth.UserCredential>;
 	/**
-		Gets the list of provider IDs that can be used to sign in for the given email
-		address. Useful for an "identifier-first" sign-in flow.
+		Gets the list of possible sign in methods for the given email address. This
+		is useful to differentiate methods of sign-in for the same provider,
+		eg. `EmailAuthProvider` which has 2 methods of sign-in, email/password and
+		email/link.
 		
 		<h4>Error Codes</h4>
 		<dl>
@@ -115,7 +164,11 @@ package firebase.auth;
 		<dd>Thrown if the email address is not valid.</dd>
 		</dl>
 	**/
-	function fetchProvidersForEmail(email:String):js.Promise<Array<String>>;
+	function fetchSignInMethodsForEmail(email:String):js.Promise<Array<String>>;
+	/**
+		Checks if an incoming link is a sign-in with email link.
+	**/
+	function isSignInWithEmailLink(emailLink:String):Bool;
 	/**
 		Adds an observer for changes to the user's sign-in state.
 		
@@ -126,13 +179,46 @@ package firebase.auth;
 		
 		To keep the old behavior, see {@link firebase.auth.Auth#onIdTokenChanged}.
 	**/
-	function onAuthStateChanged(nextOrObserver:haxe.extern.EitherType<Dynamic, Dynamic>, ?error:Dynamic, ?completed:Dynamic):Dynamic;
+	function onAuthStateChanged(nextOrObserver:haxe.extern.EitherType<haxe.Constraints.Function, firebase.Observer<haxe.extern.EitherType<firebase.auth.Error, firebase.User>>>, ?error:haxe.Constraints.Function, ?completed:firebase.CompleteFn):firebase.Unsubscribe;
 	/**
 		Adds an observer for changes to the signed-in user's ID token, which includes
 		sign-in, sign-out, and token refresh events. This method has the same
 		behavior as {@link firebase.auth.Auth#onAuthStateChanged} had prior to 4.0.0.
 	**/
-	function onIdTokenChanged(nextOrObserver:haxe.extern.EitherType<Dynamic, Dynamic>, ?error:Dynamic, ?completed:Dynamic):Dynamic;
+	function onIdTokenChanged(nextOrObserver:haxe.extern.EitherType<haxe.Constraints.Function, firebase.Observer<haxe.extern.EitherType<firebase.auth.Error, firebase.User>>>, ?error:haxe.Constraints.Function, ?completed:firebase.CompleteFn):firebase.Unsubscribe;
+	/**
+		Sends a sign-in email link to the user with the specified email.
+		
+		The sign-in operation has to always be completed in the app unlike other out
+		of band email actions (password reset and email verifications). This is
+		because, at the end of the flow, the user is expected to be signed in and
+		their Auth state persisted within the app.
+		
+		To complete sign in with the email link, call
+		{@link firebase.auth.Auth#signInWithEmailLink} with the email address and
+		the email link supplied in the email sent to the user.
+		
+		<h4>Error Codes</h4>
+		<dl>
+		<dt>auth/argument-error</dt>
+		<dd>Thrown if handleCodeInApp is false.</dd>
+		<dt>auth/invalid-email</dt>
+		<dd>Thrown if the email address is not valid.</dd>
+		<dt>auth/missing-android-pkg-name</dt>
+		<dd>An Android package name must be provided if the Android app is required
+		    to be installed.</dd>
+		<dt>auth/missing-continue-uri</dt>
+		<dd>A continue URL must be provided in the request.</dd>
+		<dt>auth/missing-ios-bundle-id</dt>
+		<dd>An iOS Bundle ID must be provided if an App Store ID is provided.</dd>
+		<dt>auth/invalid-continue-uri</dt>
+		<dd>The continue URL provided in the request is invalid.</dd>
+		<dt>auth/unauthorized-continue-uri</dt>
+		<dd>The domain of the continue URL is not whitelisted. Whitelist
+		    the domain in the Firebase console.</dd>
+		</dl>
+	**/
+	function sendSignInLinkToEmail(email:String, actionCodeSettings:firebase.auth.ActionCodeSettings):js.Promise<Dynamic>;
 	/**
 		Sends a password reset email to the given email address.
 		
@@ -144,11 +230,23 @@ package firebase.auth;
 		<dl>
 		<dt>auth/invalid-email</dt>
 		<dd>Thrown if the email address is not valid.</dd>
+		<dt>auth/missing-android-pkg-name</dt>
+		<dd>An Android package name must be provided if the Android app is required
+		    to be installed.</dd>
+		<dt>auth/missing-continue-uri</dt>
+		<dd>A continue URL must be provided in the request.</dd>
+		<dt>auth/missing-ios-bundle-id</dt>
+		<dd>An iOS Bundle ID must be provided if an App Store ID is provided.</dd>
+		<dt>auth/invalid-continue-uri</dt>
+		<dd>The continue URL provided in the request is invalid.</dd>
+		<dt>auth/unauthorized-continue-uri</dt>
+		<dd>The domain of the continue URL is not whitelisted. Whitelist
+		    the domain in the Firebase console.</dd>
 		<dt>auth/user-not-found</dt>
 		<dd>Thrown if there is no user corresponding to the email address.</dd>
 		</dl>
 	**/
-	function sendPasswordResetEmail(email:String):js.Promise<Dynamic>;
+	function sendPasswordResetEmail(email:String, ?actionCodeSettings:firebase.auth.ActionCodeSettings):js.Promise<Dynamic>;
 	/**
 		Completes the password reset process, given a confirmation code and new
 		password.
@@ -180,7 +278,7 @@ package firebase.auth;
 		<dt>auth/account-exists-with-different-credential</dt>
 		<dd>Thrown if there already exists an account with the email address
 		    asserted by the credential. Resolve this by calling
-		    {@link firebase.auth.Auth#fetchProvidersForEmail} and then asking the
+		    {@link firebase.auth.Auth#fetchSignInMethodsForEmail} and then asking the
 		    user to sign in using one of the returned providers. Once the user is
 		    signed in, the original credential can be linked to the user with
 		    {@link firebase.User#linkWithCredential}.</dd>
@@ -212,17 +310,20 @@ package firebase.auth;
 		    ID of the credential is not valid.</dd>
 		</dl>
 	**/
-	function signInWithCredential(credential:firebase.auth.AuthCredential):js.Promise<firebase.User>;
+	function signInWithCredential(credential:firebase.auth.AuthCredential):js.Promise<firebase.auth.UserCredential>;
 	/**
 		Asynchronously signs in with the given credentials, and returns any available
 		additional user information, such as user name.
+		
+		This method is deprecated. Use
+		{@link firebase.auth.Auth#signInWithCredential} instead.
 		
 		<h4>Error Codes</h4>
 		<dl>
 		<dt>auth/account-exists-with-different-credential</dt>
 		<dd>Thrown if there already exists an account with the email address
 		    asserted by the credential. Resolve this by calling
-		    {@link firebase.auth.Auth#fetchProvidersForEmail} and then asking the
+		    {@link firebase.auth.Auth#fetchSignInMethodsForEmail} and then asking the
 		    user to sign in using one of the returned providers. Once the user is
 		    signed in, the original credential can be linked to the user with
 		    {@link firebase.User#linkWithCredential}.</dd>
@@ -272,7 +373,7 @@ package firebase.auth;
 		<dd>Thrown if the custom token format is incorrect.</dd>
 		</dl>
 	**/
-	function signInWithCustomToken(token:String):js.Promise<firebase.User>;
+	function signInWithCustomToken(token:String):js.Promise<firebase.auth.UserCredential>;
 	/**
 		Asynchronously signs in using an email and password.
 		
@@ -298,7 +399,29 @@ package firebase.auth;
 		    corresponding to the email does not have a password set.</dd>
 		</dl>
 	**/
-	function signInWithEmailAndPassword(email:String, password:String):js.Promise<firebase.User>;
+	function signInWithEmailAndPassword(email:String, password:String):js.Promise<firebase.auth.UserCredential>;
+	/**
+		Asynchronously signs in using an email and sign-in email link. If no link
+		is passed, the link is inferred from the current URL.
+		
+		Fails with an error if the email address is invalid or OTP in email link
+		expires.
+		
+		Note: Confirm the link is a sign-in email link before calling this method
+		{@link firebase.auth.Auth#isSignInWithEmailLink}.
+		
+		<h4>Error Codes</h4>
+		<dl>
+		<dt>auth/expired-action-code</dt>
+		<dd>Thrown if OTP in email link expires.</dd>
+		<dt>auth/invalid-email</dt>
+		<dd>Thrown if the email address is not valid.</dd>
+		<dt>auth/user-disabled</dt>
+		<dd>Thrown if the user corresponding to the given email has been
+		    disabled.</dd>
+		</dl>
+	**/
+	function signInWithEmailLink(email:String, ?emailLink:String):js.Promise<firebase.auth.UserCredential>;
 	/**
 		Asynchronously signs in using a phone number. This method sends a code via
 		SMS to the given phone number, and returns a
@@ -334,6 +457,7 @@ package firebase.auth;
 	/**
 		Asynchronously signs in as an anonymous user.
 		
+		
 		If there is already an anonymous user signed in, that user will be returned;
 		otherwise, a new anonymous user identity will be created and returned.
 		
@@ -344,7 +468,31 @@ package firebase.auth;
 		    in the Firebase Console, under the Auth tab.</dd>
 		</dl>
 	**/
-	function signInAnonymously():js.Promise<firebase.User>;
+	function signInAnonymously():js.Promise<firebase.auth.UserCredential>;
+	/**
+		Asynchronously sets the provided user as `currentUser` on the current Auth
+		instance. A new instance copy of the user provided will be made and set as
+		`currentUser`.
+		
+		This will trigger {@link firebase.auth.Auth#onAuthStateChanged} and
+		{@link firebase.auth.Auth#onIdTokenChanged} listeners like other sign in
+		methods.
+		
+		The operation fails with an error if the user to be updated belongs to a
+		different Firebase project.
+		
+		<h4>Error Codes</h4>
+		<dl>
+		<dt>auth/invalid-user-token</dt>
+		<dd>Thrown if the user to be updated belongs to a diffent Firebase
+		    project.</dd>
+		<dt>auth/user-token-expired</dt>
+		<dd>Thrown if the token of the user to be updated is expired.</dd>
+		<dt>auth/null-user</dt>
+		<dd>Thrown if the user to be updated is null.</dd>
+		</dl>
+	**/
+	function updateCurrentUser(?user:firebase.User):js.Promise<Dynamic>;
 	/**
 		Signs out the current user.
 	**/
@@ -486,4 +634,21 @@ package firebase.auth;
 		</dl>
 	**/
 	function getRedirectResult():js.Promise<firebase.auth.UserCredential>;
+}
+@:jsRequire("firebase", "auth.Auth.Persistence") @:enum extern abstract Persistence(String) {
+	/**
+		Indicates that the state will be persisted even when the browser window is
+		closed or the activity is destroyed in react-native.
+	**/
+	var LOCAL;
+	/**
+		Indicates that the state will only be stored in memory and will be cleared
+		when the window or activity is refreshed.
+	**/
+	var NONE;
+	/**
+		Indicates that the state will only persist in current session/tab, relevant
+		to web only, and will be cleared when the tab is closed.
+	**/
+	var SESSION;
 }
