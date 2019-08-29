@@ -6,7 +6,8 @@ extern typedef UserCredential = {
 		operationType could be 'signIn' for a sign-in operation, 'link' for a linking
 		operation and 'reauthenticate' for a reauthentication operation.
 	**/
-	var UserCredential : { @:optional
-	var user : firebase.User; @:optional
-	var credential : firebase.auth.AuthCredential; var operationType : String; var additionalUserInfo : firebase.auth.AdditionalUserInfo; };
+	@:optional var user : firebase.User;
+	@:optional var credential : firebase.auth.AuthCredential;
+	var operationType : String;
+	var additionalUserInfo : firebase.auth.AdditionalUserInfo;
 }
